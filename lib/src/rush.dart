@@ -95,6 +95,9 @@ mixin Rush {
   /// Color object representing black (#000000).
   static const Color black = Color(0xFF000000);
 
+  /// Color object representing black (#000000).
+  static const Color transparent = Colors.transparent;
+
   /// Color object representing white (#ffffff).
   static const Color white = Color(0xFFFFFFFF);
 
@@ -1793,13 +1796,19 @@ mixin Rush {
       );
 
   /// Converts a hexadecimal color code to an integer representation.
-  static int getColorFromHex(String hexColor) {
-    var newHexColor =
-        hexColor.toUpperCase().replaceAll('#', '').replaceAll('0X', '');
-    if (newHexColor.length == 6) {
-      newHexColor = 'FF$hexColor';
+  static int hexToIntWithPrefix(String hexCode) {
+    final newHexCode = hexCode.toUpperCase().replaceAll('#', '');
+    if (newHexCode.length == 6) {
+      return int.parse(
+        '0xFF$newHexCode',
+      ); // Add "0xFF" prefix for 6-character codes
+    } else if (newHexCode.length == 8) {
+      return int.parse(
+        newHexCode,
+      ); // Already has "FF" prefix for 8-character codes
+    } else {
+      throw FormatException('Invalid hex code: $newHexCode');
     }
-    return int.parse(newHexColor, radix: 16);
   }
 
   /// Copies the provided data to the clipboard.
