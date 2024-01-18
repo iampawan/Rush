@@ -14,9 +14,9 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "Hello".hidePartial()!,
-            ),
+            const Text(
+              "Hello",
+            ).rush.bold.italic.xl4.brown500.apply(),
           ],
         ),
       ),

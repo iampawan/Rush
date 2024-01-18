@@ -78,9 +78,9 @@ void main() {
     });
 
     test('capitalize should capitalize the first letter of the string', () {
-      const text = 'hello';
+      const text = 'hello world';
       final capitalizedText = text.capitalize();
-      expect(capitalizedText, 'Hello');
+      expect(capitalizedText, 'Hello world');
     });
 
     test('toDateTime should convert the string to a DateTime object', () {

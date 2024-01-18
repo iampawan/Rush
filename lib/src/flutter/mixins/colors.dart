@@ -21,8 +21,8 @@ mixin RushColorMixin<T> {
 
   @protected
 
-  /// The color used for velocity.
-  Color? velocityColor;
+  /// The color used on rush widgets.
+  Color? rushColor;
 
   /// Sets the child color.
   set childToColor(T child) {
@@ -757,12 +757,12 @@ mixin RushColorMixin<T> {
 
   /// The transparent color.
   T get transparent {
-    velocityColor = Colors.transparent;
+    rushColor = Colors.transparent;
     return _childToColor;
   }
 
   T _colorIt({required Color color, required T child}) {
-    velocityColor = color;
+    rushColor = color;
     return child;
   }
 }
