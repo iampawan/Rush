@@ -18,10 +18,12 @@ class HomePage extends StatelessWidget {
                     'Hello World sasdafddfdsffdssfdafdsfdsfdsdsffdsfdsfdsdfsfdssfdafddfsdfsda')
                 .rush
                 .xl6
+                .quickStyle()
                 .strikethrough
                 .dotted
                 .decorationColor(Colors.red)
-                .apply(),
+                .apply()
+                .p16(),
           ],
         ),
       ),
