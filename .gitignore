@@ -16,6 +16,11 @@ migrate_working_dir/
 *.iws
 .idea/
 
+website/node_modules
+website/.cache
+website/.vscode
+
+
 # VSCode related
 .vscode/*
 
