@@ -1,5 +1,5 @@
-import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
@@ -8,6 +8,8 @@ export default defineConfig({
 			title: 'rush.dart',
 			social: {
 				github: 'https://github.com/iampawan/rush',
+				instagram: 'https://www.instagram.com/codepur_ka_superhero',
+				twitter: 'https://www.twitter.com/imthepk',
 			},
 			sidebar: [
 				{

@@ -1,9 +1,14 @@
 ---
-title: Rush For Flutter
+title: Rush For Flutter 🚀
 description: Rush is a powerful and flexible library for Flutter that accelerates app development.
 template: splash
 hero:
-  tagline: In a rush? Get Ahead Faster in Flutter Development with Rush!
+  tagline: |
+    In a rush? Get Ahead Faster in Flutter Development with Rush!
+    <div class="roller">
+      <span id="pre_text">Made for</span>
+      <span id="changing_text">Pro Developers.</span>
+    </div>
   image:
     file: ../../assets/rush.webp
   actions:
@@ -16,9 +21,15 @@ hero:
       icon: external
 ---
 
+import "/src/styles/_overrides.scss";
 import { Card, CardGrid } from "@astrojs/starlight/components";
+import ScriptWorkaround from "/src/components/ScriptWorkaround.astro";
+import StatusComponent from "/src/components/StatusComponent.astro";
+import TimelineComponent from "/src/components/TimelineComponent.astro";
+import About from "../../components/About.astro";
 
-## Next steps
+<StatusComponent />
+<TimelineComponent />
 
 <CardGrid stagger>
   <Card title="Fast UI Development" icon="rocket">
@@ -35,3 +46,11 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
     Explore on [pub.dev](https://starlight.astro.build/).
   </Card>
 </CardGrid>
+
+<About title="Built with ❤️ by">
+
+In addition to maintaining this package, we provide expertise in custom projects and app development. If you're looking for experienced and reliable developers to bring your app vision to life, reach out to us. Let's discuss your project and explore how we can help you achieve your goals.
+
+[Contact us](https://pawan.app)
+
+</About>
