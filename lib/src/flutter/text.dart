@@ -17,21 +17,22 @@ import 'package:rush/src/flutter/builder.dart';
 import 'package:rush/src/flutter/mixins/colors.dart';
 import 'package:rush/src/flutter/mixins/render.dart';
 
-/// The `RushTextBuilder` class is a part of the Rush library's philosophy of providing
+/// The `RushTextBuilder` class is a part of the Rush library's
+/// philosophy of providing
 /// a convenient and efficient way to build text widgets in Flutter.
 ///
-/// The philosophy behind `RushTextBuilder` is to provide a builder class that encapsulates
-/// the complexity of creating text widgets, while providing a fluent and intuitive interface
-/// for developers. This is achieved by extending the `RushWidgetBuilder` and including mixins
+/// The philosophy behind `RushTextBuilder` is to provide a builder class
+/// that encapsulates the complexity of creating text widgets, while providing
+/// a fluent and intuitive interface for developers. This is achieved
+/// by extending the `RushWidgetBuilder` and including mixins
 /// for color and render functionality.
 ///
-/// The `RushTextBuilder` allows developers to focus on what matters most - the content and style
-/// of the text, rather than the details of widget creation. It provides a simple and expressive
-/// way to define text and its style, making it easier to create consistent and beautiful UIs.
+/// The `RushTextBuilder` allows developers to focus on what matters most -
+/// the content and style of the text, rather than the details of
+/// widget creation. It provides a simple and expressive way to define text
+/// and its style, making it easier to create consistent and beautiful UIs.
 ///
-/// The `RushTextBuilder` is designed with the principles of the Rust programming language in mind,
-/// focusing on performance, reliability, and productivity. It aims to bring the same level of
-/// efficiency and expressiveness to Flutter development.
+
 @protected
 class RushTextBuilder extends RushWidgetBuilder<Widget>
     with RushColorMixin<RushTextBuilder>, RushRenderMixin<RushTextBuilder> {
@@ -65,6 +66,10 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
   double? _shadowBlur;
   Color? _shadowColor;
   Offset? _shadowOffset;
+  Gradient? _gradient;
+  TextDecorationStyle? _textDecorationStyle;
+  Color? _textDecorationColor;
+  Color? _backgroundColor;
 
   /// Sets the text content for the RushTextBuilder.
   ///
@@ -290,24 +295,76 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
   RushTextBuilder shadowOffset(double dx, double dy) =>
       this.._shadowOffset = Offset(dx, dy);
 
+  /// Sets the gradient for the text.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.gradient(LinearGradient(
+  ///   colors: [Colors.red, Colors.blue],
+  ///   begin: Alignment.topLeft,
+  ///   end: Alignment.bottomRight,
+  /// )).apply();
+  /// ```
+  RushTextBuilder gradient(Gradient gradient) {
+    _gradient = gradient;
+    return this;
+  }
+
   @override
   Widget apply({Key? key}) {
-    const kColorDefault = 0xFF000000;
     if (!willRender) {
       return const SizedBox.shrink();
     }
-    final sdw =
-        _shadowBlur != null || _shadowColor != null || _shadowOffset != null
-            ? <Shadow>[
-                Shadow(
-                  blurRadius: _shadowBlur ?? 0.0,
-                  color: _shadowColor ?? const Color(kColorDefault),
-                  offset: _shadowOffset ?? Offset.zero,
-                ),
-              ]
-            : <Shadow>[];
 
-    final ts = TextStyle(
+    final shadow = _buildShadow();
+    final textStyle = _buildTextStyle(shadow);
+
+    final textWidget = Text(
+      _text!,
+      key: key ?? _key,
+      textAlign: _textAlign,
+      maxLines: _maxLines,
+      textScaler:
+          _scaleFactor == null ? null : TextScaler.linear(_scaleFactor!),
+      style: _themedStyle?.merge(textStyle) ??
+          _textStyle?.merge(textStyle) ??
+          textStyle,
+      softWrap: _softWrap ?? true,
+      overflow: _overflow ?? TextOverflow.clip,
+      strutStyle: _strutStyle,
+    );
+
+    if (_gradient != null) {
+      return ShaderMask(
+        key: key ?? _key,
+        shaderCallback: (bounds) => _gradient!.createShader(
+          Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+        ),
+        child: textWidget,
+      );
+    } else {
+      return textWidget;
+    }
+  }
+
+  List<Shadow> _buildShadow() {
+    const kColorDefault = 0xFF000000;
+
+    if (_shadowBlur == null && _shadowColor == null && _shadowOffset == null) {
+      return <Shadow>[];
+    }
+
+    return <Shadow>[
+      Shadow(
+        blurRadius: _shadowBlur ?? 0.0,
+        color: _shadowColor ?? const Color(kColorDefault),
+        offset: _shadowOffset ?? Offset.zero,
+      ),
+    ];
+  }
+
+  TextStyle _buildTextStyle(List<Shadow> shadow) {
+    return TextStyle(
       color: rushColor,
       fontSize: _fontSize,
       fontStyle: _fontStyle,
@@ -318,23 +375,11 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
       height: _lineHeight,
       textBaseline: _textBaseline ?? TextBaseline.alphabetic,
       wordSpacing: _wordSpacing,
-      shadows: sdw.isEmpty ? null : sdw,
+      shadows: shadow.isEmpty ? null : shadow,
+      decorationStyle: _textDecorationStyle,
+      decorationColor: _textDecorationColor,
+      backgroundColor: _backgroundColor,
     );
-
-    final textWidget = Text(
-      _text!,
-      key: key ?? _key,
-      textAlign: _textAlign,
-      maxLines: _maxLines,
-      textScaler:
-          _scaleFactor == null ? null : TextScaler.linear(_scaleFactor!),
-      style: _themedStyle?.merge(ts) ?? _textStyle?.merge(ts) ?? ts,
-      softWrap: _softWrap ?? true,
-      overflow: _overflow ?? TextOverflow.clip,
-      strutStyle: _strutStyle,
-    );
-
-    return textWidget;
   }
 }
 
@@ -698,9 +743,9 @@ extension RushTextBuilderTextDecorationExtension on RushTextBuilder {
   ///
   /// Example:
   /// ```dart
-  /// Text('Hello World').rush.lineThrough.apply();
+  /// Text('Hello World').rush.strikethrough.apply();
   /// ```
-  RushTextBuilder get lineThrough =>
+  RushTextBuilder get strikethrough =>
       this.._decoration = TextDecoration.lineThrough;
 
   /// Sets the themed style with overline decoration.
@@ -718,6 +763,69 @@ extension RushTextBuilderTextDecorationExtension on RushTextBuilder {
   /// Text('Hello World').rush.noDecoration.apply();
   /// ```
   RushTextBuilder get noDecoration => this.._decoration = TextDecoration.none;
+
+  /// Sets the themed style with solid text decoration style.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.solid.apply();
+  /// ```
+  RushTextBuilder get solid =>
+      this.._textDecorationStyle = TextDecorationStyle.solid;
+
+  /// Sets the themed style with double text decoration style.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.double.apply();
+  /// ```
+  RushTextBuilder get double =>
+      this.._textDecorationStyle = TextDecorationStyle.double;
+
+  /// Sets the themed style with dotted text decoration style.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.dotted.apply();
+  /// ```
+  RushTextBuilder get dotted =>
+      this.._textDecorationStyle = TextDecorationStyle.dotted;
+
+  /// Sets the themed style with dashed text decoration style.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.dashed.apply();
+  /// ```
+  RushTextBuilder get dashed =>
+      this.._textDecorationStyle = TextDecorationStyle.dashed;
+
+  /// Sets the themed style with wavy text decoration style.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.wavy.apply();
+  /// ```
+  RushTextBuilder get wavy =>
+      this.._textDecorationStyle = TextDecorationStyle.wavy;
+
+  /// Sets the themed style with a specific decoration color.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.decorationColor(Colors.red).apply();
+  /// ```
+  RushTextBuilder decorationColor(Color color) =>
+      this.._textDecorationColor = color;
+
+  /// Sets the themed style with a specific background color.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.backgroundColor(Colors.yellow).apply();
+  /// ```
+  RushTextBuilder backgroundColor(Color color) =>
+      this.._backgroundColor = color;
 }
 
 /// Extension methods for RushTextBuilder class.

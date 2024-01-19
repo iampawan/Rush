@@ -14,6 +14,7 @@ void main() {
               .rush
               .text('New World')
               .textStyle(const TextStyle(color: Colors.red))
+              .gradient(const LinearGradient(colors: [Colors.red, Colors.blue]))
               .hexColor('#FF0000')
               .red600
               .color(Colors.red)
@@ -1011,7 +1012,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: const Text('Hello World').rush.lineThrough.apply(),
+            body: const Text('Hello World').rush.strikethrough.apply(),
           ),
         ),
       );
@@ -1282,6 +1283,164 @@ void main() {
           offset: Offset(2, 2),
         ),
       ]);
+    });
+
+    testWidgets(
+        'RushTextBuilder sets themed style with solid text decoration style',
+        (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: const Text('Hello World').rush.solid.apply(),
+          ),
+        ),
+      );
+
+      // Verify that our Text widget has the correct text decoration style.
+      final textWidget = tester.widget(find.text('Hello World')) as Text;
+      expect(textWidget.style?.decorationStyle, TextDecorationStyle.solid);
+    });
+
+    testWidgets(
+        'RushTextBuilder sets themed style with double text decoration style',
+        (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: const Text('Hello World').rush.double.apply(),
+          ),
+        ),
+      );
+
+      // Verify that our Text widget has the correct text decoration style.
+      final textWidget = tester.widget(find.text('Hello World')) as Text;
+      expect(textWidget.style?.decorationStyle, TextDecorationStyle.double);
+    });
+
+    testWidgets(
+        'RushTextBuilder sets themed style with dotted text decoration style',
+        (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: const Text('Hello World').rush.dotted.apply(),
+          ),
+        ),
+      );
+
+      // Verify that our Text widget has the correct text decoration style.
+      final textWidget = tester.widget(find.text('Hello World')) as Text;
+      expect(textWidget.style?.decorationStyle, TextDecorationStyle.dotted);
+    });
+
+    testWidgets(
+        'RushTextBuilder sets themed style with dashed text decoration style',
+        (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: const Text('Hello World').rush.dashed.apply(),
+          ),
+        ),
+      );
+
+      // Verify that our Text widget has the correct text decoration style.
+      final textWidget = tester.widget(find.text('Hello World')) as Text;
+      expect(textWidget.style?.decorationStyle, TextDecorationStyle.dashed);
+    });
+
+    testWidgets(
+        'RushTextBuilder sets themed style with wavy text decoration style',
+        (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: const Text('Hello World').rush.wavy.apply(),
+          ),
+        ),
+      );
+
+      // Verify that our Text widget has the correct text decoration style.
+      final textWidget = tester.widget(find.text('Hello World')) as Text;
+      expect(textWidget.style?.decorationStyle, TextDecorationStyle.wavy);
+    });
+
+    testWidgets(
+        'RushTextBuilder sets themed style with specific decoration color',
+        (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: const Text('Hello World')
+                .rush
+                .decorationColor(Colors.red)
+                .apply(),
+          ),
+        ),
+      );
+
+      // Verify that our Text widget has the correct decoration color.
+      final textWidget = tester.widget(find.text('Hello World')) as Text;
+      expect(textWidget.style?.decorationColor, Colors.red);
+    });
+
+    testWidgets(
+        'RushTextBuilder sets themed style with specific background color',
+        (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: const Text('Hello World')
+                .rush
+                .backgroundColor(Colors.yellow)
+                .apply(),
+          ),
+        ),
+      );
+
+      // Verify that our Text widget has the correct background color.
+      final textWidget = tester.widget(find.text('Hello World')) as Text;
+      expect(textWidget.style?.backgroundColor, Colors.yellow);
+    });
+
+    testWidgets('RushTextBuilder sets quick style properties correctly',
+        (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: const Text('Hello World')
+                .rush
+                .quickStyle(
+                  bold: true,
+                  italic: true,
+                  size: 20,
+                  color: Colors.blue,
+                )
+                .apply(),
+          ),
+        ),
+      );
+
+      // Verify that our Text widget has the correct font weight.
+      final textWidget = tester.widget(find.text('Hello World')) as Text;
+      expect(textWidget.style?.fontWeight, FontWeight.bold);
+
+      // Verify that our Text widget has the correct font style.
+      expect(textWidget.style?.fontStyle, FontStyle.italic);
+
+      // Verify that our Text widget has the correct font size.
+      expect(textWidget.style?.fontSize, 20);
+
+      // Verify that our Text widget has the correct color.
+      expect(textWidget.style?.color, Colors.blue);
     });
   });
 }

@@ -15,8 +15,13 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "Hello",
-            ).rush.xl6.brown600.displayLarge(context).tight.apply(),
+                    'Hello World sasdafddfdsffdssfdafdsfdsfdsdsffdsfdsfdsdfsfdssfdafddfsdfsda')
+                .rush
+                .xl6
+                .strikethrough
+                .dotted
+                .decorationColor(Colors.red)
+                .apply(),
           ],
         ),
       ),
