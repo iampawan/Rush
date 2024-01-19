@@ -16,7 +16,15 @@ class HomePage extends StatelessWidget {
           children: [
             const Text(
               "Hello",
-            ).rush.bold.italic.xl4.brown500.apply(),
+            )
+                .rush
+                .xl6
+                .styles(
+                  bold: true,
+                  color: Rush.mint900,
+                  italic: true,
+                )
+                .apply(),
           ],
         ),
       ),

@@ -196,6 +196,362 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
   /// ```
   RushTextBuilder align(TextAlign align) => this.._textAlign = align;
 
+  /// Sets the font size for the text.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.size(16).apply();
+  /// ```
+  RushTextBuilder size(double? size) => this.._fontSize = size;
+
+  /// Scales the themed style with a custom font size factor.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.scale(1.5).apply();
+  /// ```
+  RushTextBuilder scale(double value) =>
+      _fontSizedText(child: this, scaleFactor: value);
+
+  /// sets the font size for the text.
+  RushTextBuilder _fontSizedText({
+    required double scaleFactor,
+    required RushTextBuilder child,
+  }) {
+    _fontSize = _fontSize ?? 14.0;
+    _scaleFactor = scaleFactor;
+    return this;
+  }
+
+  /// Sets the letter spacing for the text.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.letterSpacing(2.0).apply();
+  /// ```
+  RushTextBuilder letterSpacing(double val) => this.._letterSpacing = val;
+
+  /// Sets the line height to a custom value.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.lineHeight(1.75).apply();
+  /// ```
+  RushTextBuilder lineHeight(double val) => this.._lineHeight = val;
+
+  /// Sets the shadow properties for the text.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.shadow(2.0, 2.0, 4.0, Colors.black).apply();
+  /// ```
+  RushTextBuilder shadow(
+    double offsetX,
+    double offsetY,
+    double blurRadius,
+    Color color,
+  ) =>
+      this
+        .._shadowBlur = blurRadius
+        .._shadowColor = color
+        .._shadowOffset = Offset(offsetX, offsetY);
+
+  /// Sets the blur radius for the text shadow.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.shadowBlur(4.0).apply();
+  /// ```
+  RushTextBuilder shadowBlur(double blur) => this.._shadowBlur = blur;
+
+  /// Sets the color for the text shadow.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.shadowColor(Colors.black).apply();
+  /// ```
+  RushTextBuilder shadowColor(Color color) => this.._shadowColor = color;
+
+  /// Sets the offset for the text shadow.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.shadowOffset(2.0, 2.0).apply();
+  /// ```
+  RushTextBuilder shadowOffset(double dx, double dy) =>
+      this.._shadowOffset = Offset(dx, dy);
+
+  @override
+  Widget apply({Key? key}) {
+    const kColorDefault = 0xFF000000;
+    if (!willRender) {
+      return const SizedBox.shrink();
+    }
+    final sdw =
+        _shadowBlur != null || _shadowColor != null || _shadowOffset != null
+            ? <Shadow>[
+                Shadow(
+                  blurRadius: _shadowBlur ?? 0.0,
+                  color: _shadowColor ?? const Color(kColorDefault),
+                  offset: _shadowOffset ?? Offset.zero,
+                ),
+              ]
+            : <Shadow>[];
+
+    final ts = TextStyle(
+      color: rushColor,
+      fontSize: _fontSize,
+      fontStyle: _fontStyle,
+      fontFamily: _fontFamily,
+      fontWeight: _fontWeight,
+      letterSpacing: _letterSpacing,
+      decoration: _decoration,
+      height: _lineHeight,
+      textBaseline: _textBaseline ?? TextBaseline.alphabetic,
+      wordSpacing: _wordSpacing,
+      shadows: sdw.isEmpty ? null : sdw,
+    );
+
+    final textWidget = Text(
+      _text!,
+      key: key ?? _key,
+      textAlign: _textAlign,
+      maxLines: _maxLines,
+      textScaler:
+          _scaleFactor == null ? null : TextScaler.linear(_scaleFactor!),
+      style: _themedStyle?.merge(ts) ?? _textStyle?.merge(ts) ?? ts,
+      softWrap: _softWrap ?? true,
+      overflow: _overflow ?? TextOverflow.clip,
+      strutStyle: _strutStyle,
+    );
+
+    return textWidget;
+  }
+}
+
+/// Extension methods for Text class.
+extension RushTextExtensions on Text {
+  /// Returns a RushTextBuilder instance for fluent text styling.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.xl2.bold.red600.apply();
+  /// ```
+  RushTextBuilder get rush => RushTextBuilder.existing(data, style, key);
+}
+
+/// Extension methods for RushTextBuilder class.
+extension RushTextBuilderStyles on RushTextBuilder {
+  /// Sets the styles for the text.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.styles(
+  ///   bold: true,
+  ///   italic: true,
+  ///   size: 20.0,
+  ///   color: Colors.red,
+  /// ).apply();
+  /// ```
+  RushTextBuilder styles({
+    bool? bold,
+    bool? italic,
+    double? size,
+    Color? color,
+  }) {
+    if (bold != null && bold) {
+      _fontWeight = FontWeight.bold;
+    }
+    if (italic != null && italic) {
+      _fontStyle = FontStyle.italic;
+    }
+    if (size != null) {
+      _fontSize = size;
+    }
+    if (color != null) {
+      // ignore: invalid_use_of_protected_member
+      rushColor = color;
+    }
+    return this;
+  }
+}
+
+/// Extension methods for RushTextBuilder class.
+extension RushTextBuilderFontSizeExtension on RushTextBuilder {
+  /// Sets the themed style with extra small font size.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.xs.apply();
+  /// ```
+  RushTextBuilder get xs => this.._scaleFactor = 0.75;
+
+  /// Sets the themed style with small font size.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.sm.apply();
+  /// ```
+  RushTextBuilder get sm => this.._scaleFactor = 0.875;
+
+  /// Sets the themed style with no font scaling.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.noScale.apply();
+  /// ```
+  RushTextBuilder get noScale => this.._scaleFactor = 1;
+
+  /// Sets the themed style with large font size.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.lg.apply();
+  /// ```
+  RushTextBuilder get lg => this.._scaleFactor = 1.125;
+
+  /// Sets the themed style with extra large font size.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.xl.apply();
+  /// ```
+  RushTextBuilder get xl => this.._scaleFactor = 1.25;
+
+  /// Sets the themed style with 2x extra large font size.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.xl2.apply();
+  /// ```
+  RushTextBuilder get xl2 => this.._scaleFactor = 1.5;
+
+  /// Sets the themed style with 3x extra large font size.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.xl3.apply();
+  /// ```
+  RushTextBuilder get xl3 => this.._scaleFactor = 1.875;
+
+  /// Sets the themed style with 4x extra large font size.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.xl4.apply();
+  /// ```
+  RushTextBuilder get xl4 => this.._scaleFactor = 2.25;
+
+  /// Sets the themed style with 5x extra large font size.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.xl5.apply();
+  /// ```
+  RushTextBuilder get xl5 => this.._scaleFactor = 3;
+
+  /// Sets the themed style with 6x extra large font size.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.xl6.apply();
+  /// ```
+  RushTextBuilder get xl6 => this.._scaleFactor = 4;
+}
+
+/// Extension methods for RushTextBuilder class.
+extension RushTextBuilderFontWeightExtension on RushTextBuilder {
+  /// Sets the themed style with hairline font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.hairLine.apply();
+  /// ```
+  RushTextBuilder get hairLine => this.._fontWeight = FontWeight.w100;
+
+  /// Sets the themed style with thin font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.thin.apply();
+  /// ```
+  RushTextBuilder get thin => this.._fontWeight = FontWeight.w200;
+
+  /// Sets the themed style with light font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.light.apply();
+  /// ```
+  RushTextBuilder get light => this.._fontWeight = FontWeight.w300;
+
+  /// Sets the themed style with normal font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.normal.apply();
+  /// ```
+  RushTextBuilder get normal => this.._fontWeight = FontWeight.w400;
+
+  /// Sets the themed style with medium font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.medium.apply();
+  /// ```
+  RushTextBuilder get medium => this.._fontWeight = FontWeight.w500;
+
+  /// Sets the themed style with semi-bold font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.semiBold.apply();
+  /// ```
+  RushTextBuilder get semiBold => this.._fontWeight = FontWeight.w600;
+
+  /// Sets the themed style with bold font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.bold.apply();
+  /// ```
+  RushTextBuilder get bold => this.._fontWeight = FontWeight.w700;
+
+  /// Sets the themed style with extra bold font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.extraBold.apply();
+  /// ```
+  RushTextBuilder get extraBold => this.._fontWeight = FontWeight.w800;
+
+  /// Sets the themed style with extra black font weight.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.extraBlack.apply();
+  /// ```
+  RushTextBuilder get extraBlack => this.._fontWeight = FontWeight.w900;
+}
+
+/// Extension methods for RushTextBuilder class.
+extension RushTextBuilderTextAlignExtension on RushTextBuilder {
+  /// Sets the text alignment to left.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.left.apply();
+  /// ```
+  RushTextBuilder get left => this.._textAlign = TextAlign.left;
+
+  /// Sets the text alignment to right.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.right.apply();
+  /// ```
+  RushTextBuilder get right => this.._textAlign = TextAlign.right;
+
   /// Sets the text alignment to center.
   ///
   /// Example:
@@ -203,6 +559,14 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
   /// Text('Hello World').rush.center.apply();
   /// ```
   RushTextBuilder get center => this.._textAlign = TextAlign.center;
+
+  /// Sets the text alignment to justify.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.justify.apply();
+  /// ```
+  RushTextBuilder get justify => this.._textAlign = TextAlign.justify;
 
   /// Sets the text alignment to start.
   ///
@@ -219,14 +583,36 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
   /// Text('Hello World').rush.end.apply();
   /// ```
   RushTextBuilder get end => this.._textAlign = TextAlign.end;
+}
 
-  /// Sets the text alignment to justify.
+/// Extension methods for RushTextBuilder class.
+extension RushTextBuilderFontStyleExtension on RushTextBuilder {
+  /// Sets the themed style with italic font.
   ///
   /// Example:
   /// ```dart
-  /// Text('Hello World').rush.justify.apply();
+  /// Text('Hello World').rush.italic.apply();
   /// ```
-  RushTextBuilder get justify => this.._textAlign = TextAlign.justify;
+  RushTextBuilder get italic => this.._fontStyle = FontStyle.italic;
+
+  /// Sets the themed style with normal font.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.noStyle.apply();
+  /// ```
+  RushTextBuilder get noStyle => this.._fontStyle = FontStyle.normal;
+}
+
+/// Extension methods for RushTextBuilder class.
+extension RushTextBuilderOverflowExtension on RushTextBuilder {
+  /// Sets the text overflow to clip.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.clip.apply();
+  /// ```
+  RushTextBuilder get clip => this.._overflow = TextOverflow.clip;
 
   /// Sets the text overflow to fade.
   ///
@@ -251,15 +637,170 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
   /// Text('Hello World').rush.visible.apply();
   /// ```
   RushTextBuilder get visible => this.._overflow = TextOverflow.visible;
+}
 
-  /// Sets the font size for the text.
+/// Extension methods for RushTextBuilder class.
+extension RushTextBuilderLineHeightExtension on RushTextBuilder {
+  /// Sets the line height to a tight value.
   ///
   /// Example:
   /// ```dart
-  /// Text('Hello World').rush.size(16).apply();
+  /// Text('Hello World').rush.heightTight.apply();
   /// ```
-  RushTextBuilder size(double? size) => this.._fontSize = size;
+  RushTextBuilder get heightTight => this.._lineHeight = 0.75;
 
+  /// Sets the line height to a snug value.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.heightSnug.apply();
+  /// ```
+  RushTextBuilder get heightSnug => this.._lineHeight = 0.875;
+
+  /// Sets the line height to a relaxed value.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.heightRelaxed.apply();
+  /// ```
+  RushTextBuilder get heightRelaxed => this.._lineHeight = 1.25;
+
+  /// Sets the line height to a loose value.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.heightLoose.apply();
+  /// ```
+  RushTextBuilder get heightLoose => this.._lineHeight = 1.5;
+}
+
+/// Extension methods for RushTextBuilder class.
+extension RushTextBuilderTextDecorationExtension on RushTextBuilder {
+  /// Sets the themed style with underline decoration.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.underline.apply();
+  /// ```
+
+  RushTextBuilder get underline => this.._decoration = TextDecoration.underline;
+
+  /// Sets the themed style with line through decoration.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.lineThrough.apply();
+  /// ```
+  RushTextBuilder get lineThrough =>
+      this.._decoration = TextDecoration.lineThrough;
+
+  /// Sets the themed style with overline decoration.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.overline.apply();
+  /// ```
+  RushTextBuilder get overline => this.._decoration = TextDecoration.overline;
+
+  /// Sets the themed style with no text decoration.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.noDecoration.apply();
+  /// ```
+  RushTextBuilder get noDecoration => this.._decoration = TextDecoration.none;
+}
+
+/// Extension methods for RushTextBuilder class.
+extension RushTextBuilderLetterSpacingExtension on RushTextBuilder {
+  /// Sets the themed style with the tightest letter spacing.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.tightest.apply();
+  /// ```
+  RushTextBuilder get tightest => this.._letterSpacing = -3.0;
+
+  /// Sets the themed style with tighter letter spacing.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.tighter.apply();
+  /// ```
+  RushTextBuilder get tighter => this.._letterSpacing = -2.0;
+
+  /// Sets the themed style with tight letter spacing.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.tight.apply();
+  /// ```
+  RushTextBuilder get tight => this.._letterSpacing = -1.0;
+
+  /// Sets the themed style with wide letter spacing.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.wide.apply();
+  /// ```
+  RushTextBuilder get wide => this.._letterSpacing = 1.0;
+
+  /// Sets the themed style with wider letter spacing.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.wider.apply();
+  /// ```
+  RushTextBuilder get wider => this.._letterSpacing = 2.0;
+
+  /// Sets the themed style with widest letter spacing.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.widest.apply();
+  /// ```
+  RushTextBuilder get widest => this.._letterSpacing = 3.0;
+}
+
+/// Extension methods for RushTextBuilder class to manipulate strings.
+
+extension RushTextBuilderStringExtension on RushTextBuilder {
+  //
+  /// Sets the themed style with uppercase text.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.uppercase.apply(); // Output: HELLO WORLD
+  /// ```
+  RushTextBuilder get uppercase => this.._text = _text!.toUpperCase();
+
+  /// Sets the themed style with lowercase text.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.lowercase.apply();
+  /// ```
+  RushTextBuilder get lowercase => this.._text = _text!.toLowerCase();
+
+  /// Sets the themed style with capitalized text.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('hello world').rush.capitalize.apply(); // Output: Hello world
+  /// ```
+  RushTextBuilder get capitalize => this.._text = _text!.capitalize();
+
+  /// Hides partial text by applying appropriate ellipsis.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.hidePartial.apply(); // Output: Hello...
+  /// ```
+  RushTextBuilder get hidePartial => this.._text = _text!.hidePartial();
+}
+
+/// Extension methods for RushTextBuilder class to manipulate theme.
+extension RushTextBuilderThemedStyleExtension on RushTextBuilder {
   /// Sets the themed style for displaying large text.
   ///
   /// Example:
@@ -424,442 +965,4 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
     _themedStyle = context.labelSmall;
     return this;
   }
-
-  /// Sets the themed style with extra small font size.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.xs.apply();
-  /// ```
-  RushTextBuilder get xs => _fontSizedText(child: this, scaleFactor: 0.75);
-
-  /// Sets the themed style with small font size.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.sm.apply();
-  /// ```
-  RushTextBuilder get sm => _fontSizedText(child: this, scaleFactor: 0.875);
-
-  /// Sets the themed style with no font scaling.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.noScale.apply();
-  /// ```
-  RushTextBuilder get noScale => _fontSizedText(child: this, scaleFactor: 1);
-
-  /// Sets the themed style with large font size.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.lg.apply();
-  /// ```
-  RushTextBuilder get lg => _fontSizedText(child: this, scaleFactor: 1.125);
-
-  /// Sets the themed style with extra large font size.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.xl.apply();
-  /// ```
-  RushTextBuilder get xl => _fontSizedText(child: this, scaleFactor: 1.25);
-
-  /// Sets the themed style with 2x extra large font size.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.xl2.apply();
-  /// ```
-  RushTextBuilder get xl2 => _fontSizedText(child: this, scaleFactor: 1.5);
-
-  /// Sets the themed style with 3x extra large font size.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.xl3.apply();
-  /// ```
-  RushTextBuilder get xl3 => _fontSizedText(child: this, scaleFactor: 1.875);
-
-  /// Sets the themed style with 4x extra large font size.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.xl4.apply();
-  /// ```
-  RushTextBuilder get xl4 => _fontSizedText(child: this, scaleFactor: 2.25);
-
-  /// Sets the themed style with 5x extra large font size.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.xl5.apply();
-  /// ```
-  RushTextBuilder get xl5 => _fontSizedText(child: this, scaleFactor: 3);
-
-  /// Sets the themed style with 6x extra large font size.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.xl6.apply();
-  /// ```
-  RushTextBuilder get xl6 => _fontSizedText(child: this, scaleFactor: 4);
-
-  /// Scales the themed style with a custom font size factor.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.scale(1.5).apply();
-  /// ```
-  RushTextBuilder scale(double value) =>
-      _fontSizedText(child: this, scaleFactor: value);
-
-  /// sets the font size for the text.
-  RushTextBuilder _fontSizedText({
-    required double scaleFactor,
-    required RushTextBuilder child,
-  }) {
-    _fontSize = _fontSize ?? 14.0;
-    _scaleFactor = scaleFactor;
-    return this;
-  }
-
-  /// Sets the themed style with hairline font weight.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.hairLine.apply();
-  /// ```
-  RushTextBuilder get hairLine => _fontWeightedText(weight: FontWeight.w100);
-
-  /// Sets the themed style with thin font weight.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.thin.apply();
-  /// ```
-  RushTextBuilder get thin => _fontWeightedText(weight: FontWeight.w200);
-
-  /// Sets the themed style with light font weight.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.light.apply();
-  /// ```
-  RushTextBuilder get light => _fontWeightedText(weight: FontWeight.w300);
-
-  /// Sets the themed style with normal font weight.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.normal.apply();
-  /// ```
-  RushTextBuilder get normal => _fontWeightedText(weight: FontWeight.w400);
-
-  /// Sets the themed style with medium font weight.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.medium.apply();
-  /// ```
-  RushTextBuilder get medium => _fontWeightedText(weight: FontWeight.w500);
-
-  /// Sets the themed style with semi-bold font weight.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.semiBold.apply();
-  /// ```
-  RushTextBuilder get semiBold => _fontWeightedText(weight: FontWeight.w600);
-
-  /// Sets the themed style with bold font weight.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.bold.apply();
-  /// ```
-  RushTextBuilder get bold => _fontWeightedText(weight: FontWeight.w700);
-
-  /// Sets the themed style with extra bold font weight.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.extraBold.apply();
-  /// ```
-  RushTextBuilder get extraBold => _fontWeightedText(weight: FontWeight.w800);
-
-  /// Sets the themed style with extra black font weight.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.extraBlack.apply();
-  /// ```
-  RushTextBuilder get extraBlack => _fontWeightedText(weight: FontWeight.w900);
-
-  /// Sets the font weight for the text.
-  RushTextBuilder _fontWeightedText({required FontWeight weight}) {
-    _fontWeight = weight;
-    return this;
-  }
-
-  /// Sets the themed style with italic font.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.italic.apply();
-  /// ```
-  RushTextBuilder get italic => this.._fontStyle = FontStyle.italic;
-
-  /// Sets the themed style with the tightest letter spacing.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.tightest.apply();
-  /// ```
-  RushTextBuilder get tightest => this.._letterSpacing = -3.0;
-
-  /// Sets the themed style with tighter letter spacing.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.tighter.apply();
-  /// ```
-  RushTextBuilder get tighter => this.._letterSpacing = -2.0;
-
-  /// Sets the themed style with tight letter spacing.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.tight.apply();
-  /// ```
-  RushTextBuilder get tight => this.._letterSpacing = -1.0;
-
-  /// Sets the themed style with wide letter spacing.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.wide.apply();
-  /// ```
-  RushTextBuilder get wide => this.._letterSpacing = 1.0;
-
-  /// Sets the themed style with wider letter spacing.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.wider.apply();
-  /// ```
-  RushTextBuilder get wider => this.._letterSpacing = 2.0;
-
-  /// Sets the themed style with widest letter spacing.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.widest.apply();
-  /// ```
-  RushTextBuilder get widest => this.._letterSpacing = 3.0;
-
-  /// Sets the themed style with underline decoration.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.underline.apply();
-  /// ```
-  RushTextBuilder get underline => this.._decoration = TextDecoration.underline;
-
-  /// Sets the themed style with line through decoration.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.lineThrough.apply();
-  /// ```
-  RushTextBuilder get lineThrough =>
-      this.._decoration = TextDecoration.lineThrough;
-
-  /// Sets the themed style with overline decoration.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.overline.apply();
-  /// ```
-  RushTextBuilder get overline => this.._decoration = TextDecoration.overline;
-
-  /// Sets the themed style with uppercase text.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.uppercase.apply(); // Output: HELLO WORLD
-  /// ```
-  RushTextBuilder get uppercase => this.._text = _text!.toUpperCase();
-
-  /// Sets the themed style with lowercase text.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.lowercase.apply();
-  /// ```
-  RushTextBuilder get lowercase => this.._text = _text!.toLowerCase();
-
-  /// Sets the letter spacing for the text.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.letterSpacing(2.0).apply();
-  /// ```
-  RushTextBuilder letterSpacing(double val) => this.._letterSpacing = val;
-
-  /// Sets the themed style with capitalized text.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('hello world').rush.capitalize.apply(); // Output: Hello world
-  /// ```
-  RushTextBuilder get capitalize => this.._text = _text!.capitalize();
-
-  /// Hides partial text by applying appropriate ellipsis.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.hidePartial.apply(); // Output: Hello...
-  /// ```
-  RushTextBuilder get hidePartial => this.._text = _text!.hidePartial();
-
-  /// Sets the line height to a tight value.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.heightTight.apply();
-  /// ```
-  RushTextBuilder get heightTight => this.._lineHeight = 0.75;
-
-  /// Sets the line height to a snug value.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.heightSnug.apply();
-  /// ```
-  RushTextBuilder get heightSnug => this.._lineHeight = 0.875;
-
-  /// Sets the line height to a relaxed value.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.heightRelaxed.apply();
-  /// ```
-  RushTextBuilder get heightRelaxed => this.._lineHeight = 1.25;
-
-  /// Sets the line height to a loose value.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.heightLoose.apply();
-  /// ```
-  RushTextBuilder get heightLoose => this.._lineHeight = 1.5;
-
-  /// Sets the line height to a custom value.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.lineHeight(1.75).apply();
-  /// ```
-  RushTextBuilder lineHeight(double val) => this.._lineHeight = val;
-
-  /// Sets the shadow properties for the text.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.shadow(2.0, 2.0, 4.0, Colors.black).apply();
-  /// ```
-  RushTextBuilder shadow(
-    double offsetX,
-    double offsetY,
-    double blurRadius,
-    Color color,
-  ) =>
-      this
-        .._shadowBlur = blurRadius
-        .._shadowColor = color
-        .._shadowOffset = Offset(offsetX, offsetY);
-
-  /// Sets the blur radius for the text shadow.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.shadowBlur(4.0).apply();
-  /// ```
-  RushTextBuilder shadowBlur(double blur) => this.._shadowBlur = blur;
-
-  /// Sets the color for the text shadow.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.shadowColor(Colors.black).apply();
-  /// ```
-  RushTextBuilder shadowColor(Color color) => this.._shadowColor = color;
-
-  /// Sets the offset for the text shadow.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.shadowOffset(2.0, 2.0).apply();
-  /// ```
-  RushTextBuilder shadowOffset(double dx, double dy) =>
-      this.._shadowOffset = Offset(dx, dy);
-
-  @override
-  Widget apply({Key? key}) {
-    const kColorDefault = 0xFF000000;
-    if (!willRender) {
-      return const SizedBox.shrink();
-    }
-    final sdw =
-        _shadowBlur != null || _shadowColor != null || _shadowOffset != null
-            ? <Shadow>[
-                Shadow(
-                  blurRadius: _shadowBlur ?? 0.0,
-                  color: _shadowColor ?? const Color(kColorDefault),
-                  offset: _shadowOffset ?? Offset.zero,
-                ),
-              ]
-            : <Shadow>[];
-
-    final ts = TextStyle(
-      color: rushColor,
-      fontSize: _fontSize,
-      fontStyle: _fontStyle,
-      fontFamily: _fontFamily,
-      fontWeight: _fontWeight,
-      letterSpacing: _letterSpacing,
-      decoration: _decoration,
-      height: _lineHeight,
-      textBaseline: _textBaseline ?? TextBaseline.alphabetic,
-      wordSpacing: _wordSpacing,
-      shadows: sdw.isEmpty ? null : sdw,
-    );
-
-    final textWidget = Text(
-      _text!,
-      key: key ?? _key,
-      textAlign: _textAlign,
-      maxLines: _maxLines,
-      textScaler:
-          _scaleFactor == null ? null : TextScaler.linear(_scaleFactor!),
-      style: _themedStyle?.merge(ts) ?? _textStyle?.merge(ts) ?? ts,
-      softWrap: _softWrap ?? true,
-      overflow: _overflow ?? TextOverflow.clip,
-      strutStyle: _strutStyle,
-    );
-
-    return textWidget;
-  }
-}
-
-/// Extension methods for Text class.
-extension RushTextExtensions on Text {
-  /// Returns a RushTextBuilder instance for fluent text styling.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.xl2.bold.red600.apply();
-  /// ```
-  RushTextBuilder get rush => RushTextBuilder.existing(data, style, key);
 }
