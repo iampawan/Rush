@@ -17,12 +17,21 @@ import 'package:rush/src/flutter/builder.dart';
 import 'package:rush/src/flutter/mixins/colors.dart';
 import 'package:rush/src/flutter/mixins/render.dart';
 
-/// A builder class for creating text widgets in Rush.
+/// The `RushTextBuilder` class is a part of the Rush library's philosophy of providing
+/// a convenient and efficient way to build text widgets in Flutter.
 ///
-/// This class extends [RushWidgetBuilder] and includes mixins for
-/// color and render functionality.
-/// It provides a convenient way to create text widgets with s
-/// pecified text and text style.
+/// The philosophy behind `RushTextBuilder` is to provide a builder class that encapsulates
+/// the complexity of creating text widgets, while providing a fluent and intuitive interface
+/// for developers. This is achieved by extending the `RushWidgetBuilder` and including mixins
+/// for color and render functionality.
+///
+/// The `RushTextBuilder` allows developers to focus on what matters most - the content and style
+/// of the text, rather than the details of widget creation. It provides a simple and expressive
+/// way to define text and its style, making it easier to create consistent and beautiful UIs.
+///
+/// The `RushTextBuilder` is designed with the principles of the Rust programming language in mind,
+/// focusing on performance, reliability, and productivity. It aims to bring the same level of
+/// efficiency and expressiveness to Flutter development.
 @protected
 class RushTextBuilder extends RushWidgetBuilder<Widget>
     with RushColorMixin<RushTextBuilder>, RushRenderMixin<RushTextBuilder> {
@@ -353,7 +362,7 @@ extension RushTextBuilderStyles on RushTextBuilder {
   ///   color: Colors.red,
   /// ).apply();
   /// ```
-  RushTextBuilder styles({
+  RushTextBuilder quickStyle({
     bool? bold,
     bool? italic,
     double? size,
