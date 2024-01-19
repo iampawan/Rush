@@ -6,10 +6,16 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'rush.dart',
+			customCss: [
+				'./src/styles/custom.css',
+			  ],
+			  lastUpdated: true,
 			social: {
 				github: 'https://github.com/iampawan/rush',
 				instagram: 'https://www.instagram.com/codepur_ka_superhero',
-				twitter: 'https://www.twitter.com/imthepk',
+				linkedin: 'https://www.linkedin.com/in/imthepk',
+				'x.com': 'https://x.com/imthepk',
+				youtube: 'https://youtube.com/@hellocodepur',
 			},
 			sidebar: [
 				{
@@ -24,6 +30,7 @@ export default defineConfig({
 					autogenerate: { directory: 'reference' },
 				},
 			],
+			
 		}),
 	],
 });
