@@ -6,8 +6,7 @@ import 'package:flutter/widgets.dart';
 /// The type of widget is defined by the generic parameter [T].
 abstract class RushWidgetBuilder<T extends Widget> {
   /// Builds a widget of type [T].
-  /// An optional [Key] can be provided.
-  T apply({Key? key});
+  T apply();
 }
 
 /// An abstract class that defines a builder for a widget
@@ -15,13 +14,13 @@ abstract class RushWidgetBuilder<T extends Widget> {
 /// The type of widget is defined by the generic parameter [T].
 abstract class RushWidgetContextBuilder<T extends Widget> {
   /// Builds a widget of type [T] with the given [BuildContext].
-  /// An optional [Key] can be provided.
-  T apply(BuildContext context, {Key? key});
+
+  T apply(BuildContext context);
 }
 
 /// An abstract class that defines a builder for a [TextSpan] widget.
 abstract class RushTextSpanBuilder {
   /// Builds a [TextSpan] widget.
-  /// An optional [Key] can be provided.
-  TextSpan apply({Key? key});
+
+  TextSpan apply();
 }

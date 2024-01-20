@@ -10,21 +10,12 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Rush'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RichText(
-              text: const TextSpan(text: "Hello world", children: [
-                TextSpan(
-                  text: "!",
-                  style: TextStyle(color: Colors.red),
-                ),
-              ]),
-            ).rush.brown600.xl5.apply()
-          ],
-        ),
-      ),
+      body: const Column()
+          .rush
+          .add(const Text(
+            "Hello World1 asaffdfsfddfsdfdgfggdgddfssfddfsadaad",
+          ).rush.xl6.red500.apply())
+          .apply(),
     );
   }
 }

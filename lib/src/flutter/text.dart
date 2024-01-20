@@ -38,6 +38,7 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
     with RushColorMixin<RushTextBuilder>, RushRenderMixin<RushTextBuilder> {
   /// Creates a new [RushTextBuilder] instance.
   RushTextBuilder.existing(
+    this._child,
     this._text,
     this._textStyle,
     this._key, {
@@ -48,6 +49,8 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
     childForRender = this;
     _isSelectable = isSelectable!;
   }
+
+  final Widget _child;
 
   /// List of rich text properties.
   final List<InlineSpan?> richProps;
@@ -321,7 +324,7 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
   }
 
   @override
-  Widget apply({Key? key}) {
+  Widget apply() {
     if (!willRender) {
       return const SizedBox.shrink();
     }
@@ -350,47 +353,111 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
       TextScaler? scaler,
       TextSpan? span,
     }) {
-      return _isSelectable
-          ? (span != null
-              ? SelectableText.rich(
-                  span,
-                  key: key ?? _key,
-                  textAlign: _textAlign ?? TextAlign.start,
-                  maxLines: _maxLines,
-                  textScaler: scaler,
-                  strutStyle: _strutStyle,
-                )
-              : SelectableText(
-                  text,
-                  key: key ?? _key,
-                  textAlign: _textAlign,
-                  maxLines: _maxLines,
-                  textScaler: scaler,
-                  style: style,
-                  strutStyle: _strutStyle,
-                ))
-          : (span != null
-              ? RichText(
-                  key: key ?? _key,
-                  textAlign: _textAlign ?? TextAlign.start,
-                  maxLines: _maxLines,
-                  textScaler: scaler!,
-                  text: span,
-                  softWrap: _softWrap ?? true,
-                  overflow: _overflow ?? TextOverflow.clip,
-                  strutStyle: _strutStyle,
-                )
-              : Text(
-                  text,
-                  key: key ?? _key,
-                  textAlign: _textAlign,
-                  maxLines: _maxLines,
-                  textScaler: scaler,
-                  style: style,
-                  softWrap: _softWrap ?? true,
-                  overflow: _overflow ?? TextOverflow.clip,
-                  strutStyle: _strutStyle,
-                ));
+      if (_isSelectable) {
+        final child = _child as SelectableText;
+        return (span != null
+            ? SelectableText.rich(
+                span,
+                key: _child.key ?? _key,
+                textAlign: _textAlign ?? TextAlign.start,
+                maxLines: _maxLines,
+                textScaler: scaler,
+                strutStyle: _strutStyle,
+                autofocus: child.autofocus,
+                cursorColor: child.cursorColor,
+                contextMenuBuilder: child.contextMenuBuilder,
+                cursorHeight: child.cursorHeight,
+                cursorRadius: child.cursorRadius,
+                cursorWidth: child.cursorWidth,
+                dragStartBehavior: child.dragStartBehavior,
+                enableInteractiveSelection: child.enableInteractiveSelection,
+                focusNode: child.focusNode,
+                onTap: child.onTap,
+                scrollPhysics: child.scrollPhysics,
+                showCursor: child.showCursor,
+                minLines: child.minLines,
+                textHeightBehavior: child.textHeightBehavior,
+                textWidthBasis: child.textWidthBasis,
+                magnifierConfiguration: child.magnifierConfiguration,
+                onSelectionChanged: child.onSelectionChanged,
+                selectionControls: child.selectionControls,
+                selectionHeightStyle: child.selectionHeightStyle,
+                selectionWidthStyle: child.selectionWidthStyle,
+                semanticsLabel: child.semanticsLabel,
+                style: style ?? child.style,
+                textDirection: child.textDirection,
+              )
+            : SelectableText(
+                text,
+                key: _child.key,
+                textAlign: _textAlign,
+                maxLines: _maxLines,
+                textScaler: scaler,
+                style: style,
+                strutStyle: _strutStyle,
+                autofocus: child.autofocus,
+                cursorColor: child.cursorColor,
+                contextMenuBuilder: child.contextMenuBuilder,
+                cursorHeight: child.cursorHeight,
+                cursorRadius: child.cursorRadius,
+                cursorWidth: child.cursorWidth,
+                dragStartBehavior: child.dragStartBehavior,
+                enableInteractiveSelection: child.enableInteractiveSelection,
+                focusNode: child.focusNode,
+                onTap: child.onTap,
+                scrollPhysics: child.scrollPhysics,
+                showCursor: child.showCursor,
+                minLines: child.minLines,
+                textHeightBehavior: child.textHeightBehavior,
+                textWidthBasis: child.textWidthBasis,
+                magnifierConfiguration: child.magnifierConfiguration,
+                onSelectionChanged: child.onSelectionChanged,
+                selectionControls: child.selectionControls,
+                selectionHeightStyle: child.selectionHeightStyle,
+                selectionWidthStyle: child.selectionWidthStyle,
+                semanticsLabel: child.semanticsLabel,
+                textDirection: child.textDirection,
+              ));
+      } else {
+        if (span != null) {
+          final child = _child as RichText;
+          return RichText(
+            key: _child.key,
+            textAlign: _textAlign ?? TextAlign.start,
+            maxLines: _maxLines,
+            textScaler: scaler!,
+            text: span,
+            softWrap: _softWrap ?? true,
+            overflow: _overflow ?? TextOverflow.clip,
+            strutStyle: _strutStyle,
+            locale: child.locale,
+            selectionColor: child.selectionColor,
+            textWidthBasis: child.textWidthBasis,
+            textHeightBehavior: child.textHeightBehavior,
+            textDirection: child.textDirection,
+            selectionRegistrar: child.selectionRegistrar,
+          );
+        } else {
+          final child = _child as Text;
+          return Text(
+            text,
+            key: _child.key,
+            textAlign: _textAlign,
+            maxLines: _maxLines,
+            textScaler: scaler,
+            style: style,
+            softWrap: _softWrap ?? true,
+            overflow: _overflow ?? TextOverflow.clip,
+            strutStyle: _strutStyle,
+            locale: child.locale,
+            selectionColor: child.selectionColor,
+            textWidthBasis: child.textWidthBasis,
+            textHeightBehavior: child.textHeightBehavior,
+            textDirection: child.textDirection,
+            semanticsLabel: child.semanticsLabel,
+          );
+        }
+      }
     }
 
     var finalWidget = buildTextWidget(
@@ -402,17 +469,14 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
 
     if (_gradient != null) {
       finalWidget = ShaderMask(
-        key: key ?? _key,
+        key: _child.key ?? _key,
         shaderCallback: (bounds) => _gradient!.createShader(
           Rect.fromLTWH(0, 0, bounds.width, bounds.height),
         ),
         child: finalWidget,
       );
     }
-    return Semantics(
-      label: _text,
-      child: finalWidget,
-    );
+    return finalWidget;
   }
 
   List<Shadow> _buildShadow() {
@@ -1142,6 +1206,7 @@ extension RushTextBuilderThemedStyleExtension on RushTextBuilder {
 }
 
 RushTextBuilder _buildRushText({
+  required Widget child,
   required String? data,
   required InlineSpan? textSpan,
   required TextStyle? style,
@@ -1155,6 +1220,7 @@ RushTextBuilder _buildRushText({
     if ((textSpan as TextSpan).children!.isNotEmpty) {
       final span = textSpan;
       return RushTextBuilder.existing(
+        child,
         span.text,
         span.style,
         key,
@@ -1163,6 +1229,7 @@ RushTextBuilder _buildRushText({
       );
     } else {
       return RushTextBuilder.existing(
+        child,
         textSpan.toPlainText(),
         textSpan.style,
         key,
@@ -1171,7 +1238,13 @@ RushTextBuilder _buildRushText({
     }
   }
 
-  return RushTextBuilder.existing(data, style, key, isSelectable: isSelectable);
+  return RushTextBuilder.existing(
+    child,
+    data,
+    style,
+    key,
+    isSelectable: isSelectable,
+  );
 }
 
 /// Extension methods for Text class.
@@ -1183,6 +1256,7 @@ extension RushTextExtensions on Text {
   /// Text('Hello World').rush.xl2.bold.red600.apply();
   /// ```
   RushTextBuilder get rush => _buildRushText(
+        child: this,
         data: data,
         textSpan: textSpan,
         style: style,
@@ -1200,6 +1274,7 @@ extension RushSelectableTextExtensions on SelectableText {
   /// SelectableText('Hello World').rush.xl2.bold.red600.apply();
   /// ```
   RushTextBuilder get rush => _buildRushText(
+        child: this,
         data: data,
         textSpan: textSpan,
         style: style,
@@ -1223,6 +1298,7 @@ extension RushRichTextExtensions on RichText {
   ///    ])).rush.brown600.xl5.apply()
   /// ```
   RushTextBuilder get rush => _buildRushText(
+        child: this,
         data: null,
         textSpan: text,
         style: text.style,
