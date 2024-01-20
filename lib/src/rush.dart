@@ -1578,76 +1578,76 @@ mixin Rush {
   static EdgeInsets e64 = const EdgeInsets.all(dp64);
 
   /// Represents zero vertical padding.
-  static const v0 = EdgeInsets.zero;
+  static const ey0 = EdgeInsets.zero;
 
   /// Represents zero horizontal padding.
-  static const h0 = EdgeInsets.zero;
+  static const ex0 = EdgeInsets.zero;
 
   /// Represents vertical padding with a size of 1.
-  static const v1 = EdgeInsets.symmetric(vertical: dp1);
+  static const ey1 = EdgeInsets.symmetric(vertical: dp1);
 
   /// Represents horizontal padding with a size of 1.
-  static const h1 = EdgeInsets.symmetric(horizontal: dp1);
+  static const ex1 = EdgeInsets.symmetric(horizontal: dp1);
 
   /// Represents vertical padding with a size of 2.
-  static const v2 = EdgeInsets.symmetric(vertical: dp2);
+  static const ey2 = EdgeInsets.symmetric(vertical: dp2);
 
   /// Represents horizontal padding with a size of 2.
-  static const h2 = EdgeInsets.symmetric(horizontal: dp2);
+  static const ex2 = EdgeInsets.symmetric(horizontal: dp2);
 
   /// Represents vertical padding with a size of 4.
-  static const v4 = EdgeInsets.symmetric(vertical: dp4);
+  static const ey4 = EdgeInsets.symmetric(vertical: dp4);
 
   /// Represents horizontal padding with a size of 4.
-  static const h4 = EdgeInsets.symmetric(horizontal: dp4);
+  static const ex4 = EdgeInsets.symmetric(horizontal: dp4);
 
   /// Represents vertical padding with a size of 8.
-  static const v8 = EdgeInsets.symmetric(vertical: dp8);
+  static const ey8 = EdgeInsets.symmetric(vertical: dp8);
 
   /// Represents horizontal padding with a size of 8.
-  static const h8 = EdgeInsets.symmetric(horizontal: dp8);
+  static const ex8 = EdgeInsets.symmetric(horizontal: dp8);
 
   /// Represents horizontal padding with a size of 12.
-  static const h12 = EdgeInsets.symmetric(horizontal: dp12);
+  static const ex12 = EdgeInsets.symmetric(horizontal: dp12);
 
   /// Represents vertical padding with a size of 12.
-  static const v12 = EdgeInsets.symmetric(vertical: dp12);
+  static const ey12 = EdgeInsets.symmetric(vertical: dp12);
 
   /// Represents vertical padding with a size of 16.
-  static const v16 = EdgeInsets.symmetric(vertical: dp16);
+  static const ey16 = EdgeInsets.symmetric(vertical: dp16);
 
   /// Represents horizontal padding with a size of 16.
-  static const h16 = EdgeInsets.symmetric(horizontal: dp16);
+  static const ex16 = EdgeInsets.symmetric(horizontal: dp16);
 
   /// Represents vertical padding with a size of 20.
-  static const v20 = EdgeInsets.symmetric(vertical: dp20);
+  static const ey20 = EdgeInsets.symmetric(vertical: dp20);
 
   /// Represents horizontal padding with a size of 20.
-  static const h20 = EdgeInsets.symmetric(horizontal: dp20);
+  static const ex20 = EdgeInsets.symmetric(horizontal: dp20);
 
   /// Represents vertical padding with a size of 24.
-  static const v24 = EdgeInsets.symmetric(vertical: dp24);
+  static const ey24 = EdgeInsets.symmetric(vertical: dp24);
 
   /// Represents horizontal padding with a size of 24.
-  static const h24 = EdgeInsets.symmetric(horizontal: dp24);
+  static const ex24 = EdgeInsets.symmetric(horizontal: dp24);
 
   /// Represents vertical padding with a size of 32.
-  static const v32 = EdgeInsets.symmetric(vertical: dp32);
+  static const ey32 = EdgeInsets.symmetric(vertical: dp32);
 
   /// Represents horizontal padding with a size of 32.
-  static const h32 = EdgeInsets.symmetric(horizontal: dp32);
+  static const ex32 = EdgeInsets.symmetric(horizontal: dp32);
 
   /// Represents horizontal padding with a size of 48.
-  static const h48 = EdgeInsets.symmetric(horizontal: dp48);
+  static const ex48 = EdgeInsets.symmetric(horizontal: dp48);
 
   /// Represents vertical padding with a size of 48.
-  static const v48 = EdgeInsets.symmetric(vertical: dp48);
+  static const ey48 = EdgeInsets.symmetric(vertical: dp48);
 
   /// Represents vertical padding with a size of 64.
-  static const v64 = EdgeInsets.symmetric(vertical: dp64);
+  static const ey64 = EdgeInsets.symmetric(vertical: dp64);
 
   /// Represents horizontal padding with a size of 64.
-  static const h64 = EdgeInsets.symmetric(horizontal: dp64);
+  static const ex64 = EdgeInsets.symmetric(horizontal: dp64);
 
   /// Represents a rounded shape border with extra small radius of 4.
   static ShapeBorder roundedXS =

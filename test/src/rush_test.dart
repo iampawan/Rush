@@ -594,49 +594,60 @@ void main() {
       expect(Rush.e48, equals(const EdgeInsets.all(Rush.dp48)));
       expect(Rush.e64, equals(const EdgeInsets.all(Rush.dp64)));
 
-      expect(Rush.v0, equals(EdgeInsets.zero));
-      expect(Rush.h0, equals(EdgeInsets.zero));
-      expect(Rush.v1, equals(const EdgeInsets.symmetric(vertical: Rush.dp1)));
-      expect(Rush.h1, equals(const EdgeInsets.symmetric(horizontal: Rush.dp1)));
-      expect(Rush.v2, equals(const EdgeInsets.symmetric(vertical: Rush.dp2)));
-      expect(Rush.h2, equals(const EdgeInsets.symmetric(horizontal: Rush.dp2)));
-      expect(Rush.v4, equals(const EdgeInsets.symmetric(vertical: Rush.dp4)));
-      expect(Rush.h4, equals(const EdgeInsets.symmetric(horizontal: Rush.dp4)));
-      expect(Rush.v8, equals(const EdgeInsets.symmetric(vertical: Rush.dp8)));
-      expect(Rush.h8, equals(const EdgeInsets.symmetric(horizontal: Rush.dp8)));
+      expect(Rush.ey0, equals(EdgeInsets.zero));
+      expect(Rush.ex0, equals(EdgeInsets.zero));
+      expect(Rush.ey1, equals(const EdgeInsets.symmetric(vertical: Rush.dp1)));
       expect(
-        Rush.h12,
+          Rush.ex1, equals(const EdgeInsets.symmetric(horizontal: Rush.dp1)));
+      expect(Rush.ey2, equals(const EdgeInsets.symmetric(vertical: Rush.dp2)));
+      expect(
+          Rush.ex2, equals(const EdgeInsets.symmetric(horizontal: Rush.dp2)));
+      expect(Rush.ey4, equals(const EdgeInsets.symmetric(vertical: Rush.dp4)));
+      expect(
+          Rush.ex4, equals(const EdgeInsets.symmetric(horizontal: Rush.dp4)));
+      expect(Rush.ey8, equals(const EdgeInsets.symmetric(vertical: Rush.dp8)));
+      expect(
+          Rush.ex8, equals(const EdgeInsets.symmetric(horizontal: Rush.dp8)));
+      expect(
+        Rush.ex12,
         equals(const EdgeInsets.symmetric(horizontal: Rush.dp12)),
       );
-      expect(Rush.v12, equals(const EdgeInsets.symmetric(vertical: Rush.dp12)));
-      expect(Rush.v16, equals(const EdgeInsets.symmetric(vertical: Rush.dp16)));
       expect(
-        Rush.h16,
+          Rush.ey12, equals(const EdgeInsets.symmetric(vertical: Rush.dp12)));
+      expect(
+          Rush.ey16, equals(const EdgeInsets.symmetric(vertical: Rush.dp16)));
+      expect(
+        Rush.ex16,
         equals(const EdgeInsets.symmetric(horizontal: Rush.dp16)),
       );
-      expect(Rush.v20, equals(const EdgeInsets.symmetric(vertical: Rush.dp20)));
       expect(
-        Rush.h20,
+          Rush.ey20, equals(const EdgeInsets.symmetric(vertical: Rush.dp20)));
+      expect(
+        Rush.ex20,
         equals(const EdgeInsets.symmetric(horizontal: Rush.dp20)),
       );
-      expect(Rush.v24, equals(const EdgeInsets.symmetric(vertical: Rush.dp24)));
       expect(
-        Rush.h24,
+          Rush.ey24, equals(const EdgeInsets.symmetric(vertical: Rush.dp24)));
+      expect(
+        Rush.ex24,
         equals(const EdgeInsets.symmetric(horizontal: Rush.dp24)),
       );
-      expect(Rush.v32, equals(const EdgeInsets.symmetric(vertical: Rush.dp32)));
       expect(
-        Rush.h32,
+          Rush.ey32, equals(const EdgeInsets.symmetric(vertical: Rush.dp32)));
+      expect(
+        Rush.ex32,
         equals(const EdgeInsets.symmetric(horizontal: Rush.dp32)),
       );
       expect(
-        Rush.h48,
+        Rush.ex48,
         equals(const EdgeInsets.symmetric(horizontal: Rush.dp48)),
       );
-      expect(Rush.v48, equals(const EdgeInsets.symmetric(vertical: Rush.dp48)));
-      expect(Rush.v64, equals(const EdgeInsets.symmetric(vertical: Rush.dp64)));
       expect(
-        Rush.h64,
+          Rush.ey48, equals(const EdgeInsets.symmetric(vertical: Rush.dp48)));
+      expect(
+          Rush.ey64, equals(const EdgeInsets.symmetric(vertical: Rush.dp64)));
+      expect(
+        Rush.ex64,
         equals(const EdgeInsets.symmetric(horizontal: Rush.dp64)),
       );
     });

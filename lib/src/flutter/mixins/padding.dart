@@ -66,76 +66,76 @@ mixin RushPaddingMixin<T> {
   T get p64 => _padIt(child: _childToPad, padding: Rush.e64);
 
   /// Adds no horizontal padding to the child.
-  T get px0 => _padIt(child: _childToPad, padding: Rush.h0);
+  T get px0 => _padIt(child: _childToPad, padding: Rush.ex0);
 
   /// Adds a small amount of horizontal padding to the child.
-  T get px1 => _padIt(child: _childToPad, padding: Rush.h1);
+  T get px1 => _padIt(child: _childToPad, padding: Rush.ex1);
 
   /// Adds a medium amount of horizontal padding to the child.
-  T get px3 => _padIt(child: _childToPad, padding: Rush.h2);
+  T get px3 => _padIt(child: _childToPad, padding: Rush.ex2);
 
   /// Adds a large amount of horizontal padding to the child.
-  T get px4 => _padIt(child: _childToPad, padding: Rush.h4);
+  T get px4 => _padIt(child: _childToPad, padding: Rush.ex4);
 
   /// Adds a larger amount of horizontal padding to the child.
-  T get px8 => _padIt(child: _childToPad, padding: Rush.h8);
+  T get px8 => _padIt(child: _childToPad, padding: Rush.ex8);
 
   /// Adds an even larger amount of horizontal padding to the child.
-  T get px12 => _padIt(child: _childToPad, padding: Rush.h12);
+  T get px12 => _padIt(child: _childToPad, padding: Rush.ex12);
 
   /// Adds a very large amount of horizontal padding to the child.
-  T get px16 => _padIt(child: _childToPad, padding: Rush.h16);
+  T get px16 => _padIt(child: _childToPad, padding: Rush.ex16);
 
   /// Adds an extra large amount of horizontal padding to the child.
-  T get px20 => _padIt(child: _childToPad, padding: Rush.h20);
+  T get px20 => _padIt(child: _childToPad, padding: Rush.ex20);
 
   /// Adds a huge amount of horizontal padding to the child.
-  T get px24 => _padIt(child: _childToPad, padding: Rush.h24);
+  T get px24 => _padIt(child: _childToPad, padding: Rush.ex24);
 
   /// Adds a massive amount of horizontal padding to the child.
-  T get px32 => _padIt(child: _childToPad, padding: Rush.h32);
+  T get px32 => _padIt(child: _childToPad, padding: Rush.ex32);
 
   /// Adds an enormous amount of horizontal padding to the child.
-  T get px48 => _padIt(child: _childToPad, padding: Rush.h48);
+  T get px48 => _padIt(child: _childToPad, padding: Rush.ex48);
 
   /// Adds a gigantic amount of horizontal padding to the child.
-  T get px64 => _padIt(child: _childToPad, padding: Rush.h64);
+  T get px64 => _padIt(child: _childToPad, padding: Rush.ex64);
 
   /// Adds no vertical padding to the child.
-  T get py0 => _padIt(child: _childToPad, padding: Rush.v0);
+  T get py0 => _padIt(child: _childToPad, padding: Rush.ey0);
 
   /// Adds a small amount of vertical padding to the child.
-  T get py1 => _padIt(child: _childToPad, padding: Rush.v1);
+  T get py1 => _padIt(child: _childToPad, padding: Rush.ey1);
 
   /// Adds a medium amount of vertical padding to the child.
-  T get py3 => _padIt(child: _childToPad, padding: Rush.v2);
+  T get py3 => _padIt(child: _childToPad, padding: Rush.ey2);
 
   /// Adds a large amount of vertical padding to the child.
-  T get py4 => _padIt(child: _childToPad, padding: Rush.v4);
+  T get py4 => _padIt(child: _childToPad, padding: Rush.ey4);
 
   /// Adds a larger amount of vertical padding to the child.
-  T get py8 => _padIt(child: _childToPad, padding: Rush.v8);
+  T get py8 => _padIt(child: _childToPad, padding: Rush.ey8);
 
   /// Adds an even larger amount of vertical padding to the child.
-  T get py12 => _padIt(child: _childToPad, padding: Rush.v12);
+  T get py12 => _padIt(child: _childToPad, padding: Rush.ey12);
 
   /// Adds a very large amount of vertical padding to the child.
-  T get py16 => _padIt(child: _childToPad, padding: Rush.v16);
+  T get py16 => _padIt(child: _childToPad, padding: Rush.ey16);
 
   /// Adds an extra large amount of vertical padding to the child.
-  T get py20 => _padIt(child: _childToPad, padding: Rush.v20);
+  T get py20 => _padIt(child: _childToPad, padding: Rush.ey20);
 
   /// Adds a huge amount of vertical padding to the child.
-  T get py24 => _padIt(child: _childToPad, padding: Rush.v24);
+  T get py24 => _padIt(child: _childToPad, padding: Rush.ey24);
 
   /// Adds a massive amount of vertical padding to the child.
-  T get py32 => _padIt(child: _childToPad, padding: Rush.v32);
+  T get py32 => _padIt(child: _childToPad, padding: Rush.ey32);
 
   /// Adds an enormous amount of vertical padding to the child.
-  T get py48 => _padIt(child: _childToPad, padding: Rush.v48);
+  T get py48 => _padIt(child: _childToPad, padding: Rush.ey48);
 
   /// Adds a gigantic amount of vertical padding to the child.
-  T get py64 => _padIt(child: _childToPad, padding: Rush.v64);
+  T get py64 => _padIt(child: _childToPad, padding: Rush.ey64);
 
   T _padIt({required EdgeInsetsGeometry padding, required T child}) {
     rushPadding = padding;
