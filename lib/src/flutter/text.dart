@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:rush/rush.dart';
 import 'package:rush/src/flutter/builder.dart';
 import 'package:rush/src/flutter/mixins/colors.dart';
@@ -37,11 +37,21 @@ import 'package:rush/src/flutter/mixins/render.dart';
 class RushTextBuilder extends RushWidgetBuilder<Widget>
     with RushColorMixin<RushTextBuilder>, RushRenderMixin<RushTextBuilder> {
   /// Creates a new [RushTextBuilder] instance.
-  RushTextBuilder.existing(this._text, this._textStyle, this._key) {
+  RushTextBuilder.existing(
+    this._text,
+    this._textStyle,
+    this._key, {
+    bool? isSelectable = false,
+    this.richProps = const [],
+  }) {
     childToColor = this;
     childForRender = this;
+    _isSelectable = isSelectable!;
   }
 
+  /// List of rich text properties.
+  final List<InlineSpan?> richProps;
+  bool _isSelectable = false;
   String? _text;
   final Key? _key;
   String? _fontFamily;
@@ -319,32 +329,90 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
     final shadow = _buildShadow();
     final textStyle = _buildTextStyle(shadow);
 
-    final textWidget = Text(
+    final finalTextStyle = _themedStyle?.merge(textStyle) ??
+        _textStyle?.merge(textStyle) ??
+        textStyle;
+
+    final textScaler =
+        _scaleFactor == null ? null : TextScaler.linear(_scaleFactor!);
+
+    final textSpan = richProps.isNotEmpty
+        ? TextSpan(
+            text: _text,
+            children: richProps.map((e) => e!).toList(),
+            style: finalTextStyle,
+          )
+        : null;
+
+    Widget buildTextWidget(
+      String text, {
+      TextStyle? style,
+      TextScaler? scaler,
+      TextSpan? span,
+    }) {
+      return _isSelectable
+          ? (span != null
+              ? SelectableText.rich(
+                  span,
+                  key: key ?? _key,
+                  textAlign: _textAlign ?? TextAlign.start,
+                  maxLines: _maxLines,
+                  textScaler: scaler,
+                  strutStyle: _strutStyle,
+                )
+              : SelectableText(
+                  text,
+                  key: key ?? _key,
+                  textAlign: _textAlign,
+                  maxLines: _maxLines,
+                  textScaler: scaler,
+                  style: style,
+                  strutStyle: _strutStyle,
+                ))
+          : (span != null
+              ? RichText(
+                  key: key ?? _key,
+                  textAlign: _textAlign ?? TextAlign.start,
+                  maxLines: _maxLines,
+                  textScaler: scaler!,
+                  text: span,
+                  softWrap: _softWrap ?? true,
+                  overflow: _overflow ?? TextOverflow.clip,
+                  strutStyle: _strutStyle,
+                )
+              : Text(
+                  text,
+                  key: key ?? _key,
+                  textAlign: _textAlign,
+                  maxLines: _maxLines,
+                  textScaler: scaler,
+                  style: style,
+                  softWrap: _softWrap ?? true,
+                  overflow: _overflow ?? TextOverflow.clip,
+                  strutStyle: _strutStyle,
+                ));
+    }
+
+    var finalWidget = buildTextWidget(
       _text!,
-      key: key ?? _key,
-      textAlign: _textAlign,
-      maxLines: _maxLines,
-      textScaler:
-          _scaleFactor == null ? null : TextScaler.linear(_scaleFactor!),
-      style: _themedStyle?.merge(textStyle) ??
-          _textStyle?.merge(textStyle) ??
-          textStyle,
-      softWrap: _softWrap ?? true,
-      overflow: _overflow ?? TextOverflow.clip,
-      strutStyle: _strutStyle,
+      style: finalTextStyle,
+      scaler: textScaler,
+      span: textSpan,
     );
 
     if (_gradient != null) {
-      return ShaderMask(
+      finalWidget = ShaderMask(
         key: key ?? _key,
         shaderCallback: (bounds) => _gradient!.createShader(
           Rect.fromLTWH(0, 0, bounds.width, bounds.height),
         ),
-        child: textWidget,
+        child: finalWidget,
       );
-    } else {
-      return textWidget;
     }
+    return Semantics(
+      label: _text,
+      child: finalWidget,
+    );
   }
 
   List<Shadow> _buildShadow() {
@@ -381,17 +449,6 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
       backgroundColor: _backgroundColor,
     );
   }
-}
-
-/// Extension methods for Text class.
-extension RushTextExtensions on Text {
-  /// Returns a RushTextBuilder instance for fluent text styling.
-  ///
-  /// Example:
-  /// ```dart
-  /// Text('Hello World').rush.xl2.bold.red600.apply();
-  /// ```
-  RushTextBuilder get rush => RushTextBuilder.existing(data, style, key);
 }
 
 /// Extension methods for RushTextBuilder class.
@@ -1082,4 +1139,94 @@ extension RushTextBuilderThemedStyleExtension on RushTextBuilder {
     _themedStyle = context.labelSmall;
     return this;
   }
+}
+
+RushTextBuilder _buildRushText({
+  required String? data,
+  required InlineSpan? textSpan,
+  required TextStyle? style,
+  required Key? key,
+  required bool isSelectable,
+}) {
+  if (data == null) {
+    if (textSpan == null) {
+      throw Exception('Text data is null');
+    }
+    if ((textSpan as TextSpan).children!.isNotEmpty) {
+      final span = textSpan;
+      return RushTextBuilder.existing(
+        span.text,
+        span.style,
+        key,
+        isSelectable: isSelectable,
+        richProps: span.children!,
+      );
+    } else {
+      return RushTextBuilder.existing(
+        textSpan.toPlainText(),
+        textSpan.style,
+        key,
+        isSelectable: isSelectable,
+      );
+    }
+  }
+
+  return RushTextBuilder.existing(data, style, key, isSelectable: isSelectable);
+}
+
+/// Extension methods for Text class.
+extension RushTextExtensions on Text {
+  /// Returns a RushTextBuilder instance for fluent text styling.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello World').rush.xl2.bold.red600.apply();
+  /// ```
+  RushTextBuilder get rush => _buildRushText(
+        data: data,
+        textSpan: textSpan,
+        style: style,
+        key: key,
+        isSelectable: false,
+      );
+}
+
+/// Extension methods for SelectableText class.
+extension RushSelectableTextExtensions on SelectableText {
+  /// Returns a RushTextBuilder instance for fluent selectable text styling.
+  ///
+  /// Example:
+  /// ```dart
+  /// SelectableText('Hello World').rush.xl2.bold.red600.apply();
+  /// ```
+  RushTextBuilder get rush => _buildRushText(
+        data: data,
+        textSpan: textSpan,
+        style: style,
+        key: key,
+        isSelectable: true,
+      );
+}
+
+/// Extension methods for RichText class.
+extension RushRichTextExtensions on RichText {
+  /// Returns a RushTextBuilder instance for fluent rich text styling.
+  ///
+  /// Example:
+  /// ```dart
+  ///  RichText(
+  ///       text: const TextSpan(text: "Hello world", children: [
+  ///          TextSpan(
+  ///               text: "!",
+  ///               style: TextStyle(color: Colors.red),
+  ///             ),
+  ///    ])).rush.brown600.xl5.apply()
+  /// ```
+  RushTextBuilder get rush => _buildRushText(
+        data: null,
+        textSpan: text,
+        style: text.style,
+        key: key,
+        isSelectable: false,
+      );
 }

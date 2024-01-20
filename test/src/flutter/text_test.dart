@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rush/src/extensions/context.dart';
@@ -58,6 +60,152 @@ void main() {
 
     // Verify that our Text widget has the correct overflow.
     expect(textWidget.overflow, TextOverflow.ellipsis);
+  });
+
+  testWidgets(
+      'RushTextBuilder creates a SelectableText widget with correct properties',
+      (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: const SelectableText('Old World')
+              .rush
+              .text('New World')
+              .textStyle(const TextStyle(color: Colors.red))
+              .gradient(const LinearGradient(colors: [Colors.red, Colors.blue]))
+              .hexColor('#FF0000')
+              .red600
+              .color(Colors.red)
+              .textBaseLine(TextBaseline.alphabetic)
+              .wordSpacing(2)
+              .overflow(TextOverflow.clip)
+              .fontWeight(FontWeight.bold)
+              .align(TextAlign.start)
+              .strutStyle(StrutStyle.disabled)
+              .fontFamily('Roboto')
+              .left
+              .right
+              .maxLines(2)
+              .xl2
+              .softWrap(false)
+              .ellipsis
+              .when(true)
+              .apply(),
+        ),
+      ),
+    );
+
+    // Verify that our Text widget is present.
+    final finder = find.text('New World');
+    expect(finder, findsOneWidget);
+
+    // Verify that our Text widget has the correct color.
+    final textWidget = tester.widget(finder) as EditableText;
+    expect(textWidget.style.color, Colors.red);
+
+    // Verify that our Text widget has the correct maxLines.
+    expect(textWidget.maxLines, 2);
+
+    // Verify that our Text widget has the correct textAlign.
+    expect(textWidget.textAlign, TextAlign.right);
+
+    // Verify that our Text widget has the correct textScaleFactor.
+    expect(textWidget.textScaler, const TextScaler.linear(1.5));
+  });
+
+  testWidgets(
+      'RushTextBuilder creates a RichText widget with correct properties',
+      (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+
+    final key = UniqueKey();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: RichText(
+            key: key,
+            text: const TextSpan(
+              text: 'Hello World',
+              children: [
+                TextSpan(
+                  text: '!',
+                  style: TextStyle(color: Colors.green),
+                ),
+              ],
+            ),
+          ).rush.maxLines(2).xl2.center.color(Colors.red).apply(),
+        ),
+      ),
+    );
+
+    // Verify that our Text widget is present.
+    final finder = find.byKey(key);
+    expect(finder, findsOneWidget);
+
+    // Verify that our Text widget has the correct color.
+    final textWidget = tester.widget(finder) as RichText;
+    expect(textWidget.text.style!.color, Colors.red);
+    expect(
+      ((textWidget.text) as TextSpan).children!.first.style!.color,
+      Colors.green,
+    );
+    // Verify that our Text widget has the correct maxLines.
+    expect(textWidget.maxLines, 2);
+
+    // Verify that our Text widget has the correct textAlign.
+    expect(textWidget.textAlign, TextAlign.center);
+
+    // Verify that our Text widget has the correct textScaleFactor.
+    expect(textWidget.textScaler, const TextScaler.linear(1.5));
+  });
+
+  testWidgets(
+      'RushTextBuilder creates a SelectableText.rich widget with correct properties',
+      (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+
+    final key = UniqueKey();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SelectableText.rich(
+            const TextSpan(
+              text: 'Hello World',
+              children: [
+                TextSpan(
+                  text: '!',
+                  style: TextStyle(color: Colors.green),
+                ),
+              ],
+            ),
+            key: key,
+          ).rush.maxLines(2).xl2.center.color(Colors.red).apply(),
+        ),
+      ),
+    );
+
+    // Verify that our Text widget is present.
+    final finder = find.byKey(key);
+    expect(finder, findsOneWidget);
+
+    // Verify that our Text widget has the correct color.
+    final textWidget = tester.widget(finder) as SelectableText;
+    expect(textWidget.textSpan!.style!.color, Colors.red);
+    expect(
+      (textWidget.textSpan!).children!.first.style!.color,
+      Colors.green,
+    );
+    // Verify that our Text widget has the correct maxLines.
+    expect(textWidget.maxLines, 2);
+
+    // Verify that our Text widget has the correct textAlign.
+    expect(textWidget.textAlign, TextAlign.center);
+
+    // Verify that our Text widget has the correct textScaleFactor.
+    expect(textWidget.textScaler, const TextScaler.linear(1.5));
   });
 
   group('Group of all individual text tests', () {

@@ -14,16 +14,14 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-                    'Hello World sasdafddfdsffdssfdafdsfdsfdsdsffdsfdsfdsdfsfdssfdafddfsdfsda')
-                .rush
-                .xl6
-                .quickStyle()
-                .strikethrough
-                .dotted
-                .decorationColor(Colors.red)
-                .apply()
-                .p16(),
+            RichText(
+              text: const TextSpan(text: "Hello world", children: [
+                TextSpan(
+                  text: "!",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ]),
+            ).rush.brown600.xl5.apply()
           ],
         ),
       ),
