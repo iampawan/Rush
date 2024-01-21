@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
           .add(const Text("Child 4").rush.xl6.red500.apply())
           .add(const Text("Child 5").rush.xl6.red500.apply())
           .center
-          .apply(),
+          .applyWithPadding(),
     );
   }
 }
