@@ -12,9 +12,15 @@ class HomePage extends StatelessWidget {
       ),
       body: const Column()
           .rush
-          .add(const Text(
-            "Hello World1 asaffdfsfddfsdfdgfggdgddfssfddfsadaad",
-          ).rush.xl6.red500.apply())
+          .addMany([1, 2, 3, 5]
+              .map((e) => const Text("Child 1").rush.red700.apply())
+              .toList())
+          .add(const Text("Child 1").rush.xl6.red700.apply())
+          .add(const Text("Child 2").rush.xl6.red700.apply())
+          .add(const Text("Child 3").rush.xl6.red500.apply())
+          .add(const Text("Child 4").rush.xl6.red500.apply())
+          .add(const Text("Child 5").rush.xl6.red500.apply())
+          .center
           .apply(),
     );
   }

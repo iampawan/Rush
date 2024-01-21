@@ -1577,6 +1577,9 @@ mixin Rush {
   /// Represents padding with a size of 64.
   static EdgeInsets e64 = const EdgeInsets.all(dp64);
 
+  /// Represents custom padding.
+  static EdgeInsets e(double value) => EdgeInsets.all(value);
+
   /// Represents zero vertical padding.
   static const ey0 = EdgeInsets.zero;
 
@@ -1648,6 +1651,12 @@ mixin Rush {
 
   /// Represents horizontal padding with a size of 64.
   static const ex64 = EdgeInsets.symmetric(horizontal: dp64);
+
+  /// Represents custom horizontal padding.
+  static EdgeInsets ex(double value) => EdgeInsets.symmetric(horizontal: value);
+
+  /// Represents custom vertical padding.
+  static EdgeInsets ey(double value) => EdgeInsets.symmetric(vertical: value);
 
   /// Represents a rounded shape border with extra small radius of 4.
   static ShapeBorder roundedXS =

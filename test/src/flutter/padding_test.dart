@@ -146,6 +146,19 @@ void main() {
     expect(paddingWidget.padding, const EdgeInsets.all(Rush.dp64));
   });
 
+  testWidgets('Padding py test', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Container().py(10),
+        ),
+      ),
+    );
+
+    final paddingWidget = tester.widget<Padding>(find.byType(Padding));
+    expect(paddingWidget.padding, const EdgeInsets.symmetric(vertical: 10));
+  });
+
   testWidgets('Padding py0 test', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -317,6 +330,19 @@ void main() {
       paddingWidget.padding,
       const EdgeInsets.symmetric(vertical: Rush.dp64),
     );
+  });
+
+  testWidgets('Padding px test', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Container().px(10),
+        ),
+      ),
+    );
+
+    final paddingWidget = tester.widget<Padding>(find.byType(Padding));
+    expect(paddingWidget.padding, const EdgeInsets.symmetric(horizontal: 10));
   });
 
   testWidgets('Padding px0 test', (WidgetTester tester) async {
