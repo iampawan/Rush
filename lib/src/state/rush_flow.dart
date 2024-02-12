@@ -1,16 +1,19 @@
 part of 'rush_engine.dart';
 
+/// A function that returns a RushFlow.
 typedef RushFlowBuilder = RushFlow Function();
 
-abstract class RushFlow<T extends RushFuel?> {
+/// An abstract class representing a RushFlow.
+abstract class RushFlow<T extends RushTank?> {
   RushFlow() {
-    status = RushStatus.idle;
+    _status = RushStatus.idle;
     _run();
   }
 
-  T? get fuel => RushEngine.fuel as T?;
+  T? get fuel => RushEngine.tank as T?;
 
-  RushStatus? status;
+  RushStatus get status => _status;
+  late RushStatus _status;
 
   final List<RushFlowBuilder> _postActions = [];
 
@@ -24,7 +27,7 @@ abstract class RushFlow<T extends RushFuel?> {
     try {
       dynamic result = execute();
       if (result is Future) {
-        status = RushStatus.loading;
+        _status = RushStatus.loading;
         RushEngine.notify(this);
         result = await result;
       }
@@ -34,23 +37,19 @@ abstract class RushFlow<T extends RushFuel?> {
         if (out is Future) {
           await out;
         }
-        status = RushStatus.success;
-        RushEngine.notify(this);
       }
+      _status = RushStatus.success;
       RushEngine.notify(this);
-      status = RushStatus.success;
 
       for (final action in _postActions) {
         action();
       }
-      // ignore: avoid_catches_without_on_clauses
     } catch (e, s) {
-      status = RushStatus.error;
+      _status = RushStatus.error;
       onException(e, s);
       RushEngine.notify(this);
     }
 
-    // Execute all the interceptors.
     for (final i in RushEngine._middlewares) {
       i.postFlow(this);
     }
@@ -63,12 +62,8 @@ abstract class RushFlow<T extends RushFuel?> {
   dynamic execute();
 
   void onException(dynamic e, StackTrace s) {
-    var isAssertOn = false;
-    assert(isAssertOn = true);
-    if (isAssertOn) {
-      print(e);
-      print(s);
-    }
+    print(e);
+    print(s);
   }
 }
 
@@ -80,21 +75,4 @@ abstract class RushMiddleware {
   bool preFlow(RushFlow action);
 
   void postFlow(RushFlow action);
-}
-
-class _RushModel extends InheritedModel<dynamic> {
-  const _RushModel({required super.child, this.recent});
-  final Set<Type>? recent;
-
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) =>
-      oldWidget.hashCode != recent.hashCode;
-
-  @override
-  bool updateShouldNotifyDependent(
-    covariant InheritedModel<dynamic> oldWidget,
-    Set<dynamic> dependencies,
-  ) {
-    return dependencies.intersection(recent!).isNotEmpty;
-  }
 }

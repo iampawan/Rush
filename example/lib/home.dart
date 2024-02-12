@@ -11,72 +11,78 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Rush'),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          AddTodoAction(Todo(title: 'New Todo'));
-          AddUserAction(User(name: 'New User'));
-        },
-        tooltip: 'Add Todo and User',
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: const Row()
+          .rush
+          .end
+          .add(
+            FloatingActionButton(
+              onPressed: () async {
+                DecrementFlow(1);
+                FetchUsersFlow();
+              },
+              child: const Icon(Icons.add),
+            ),
+          )
+          .addEmpty(width: 10)
+          .add(
+            FloatingActionButton(
+              onPressed: () async {
+                FetchUsersFlow();
+              },
+              child: const Icon(Icons.person),
+            ),
+          )
+          .apply(),
       body: const Column()
           .rush
           .add(
-            Expanded(
-              child: RushWidget<TodoFuel>(
-                actions: {
-                  FetchTodosAction: () {
-                    // Callback for FetchTodosAction
-                  },
-                  AddTodoAction: () {},
+            RushNotifier(
+              actions: {
+                IncrementFlow: (context, action, status) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('IncrementFlow status: $status')),
+                  );
                 },
+                DecrementFlow: (context, action, status) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('DecrementFlow status: $status')),
+                  );
+                },
+              },
+              child: RushBuilder<UserTank>(
                 builder: (context, fuel, status) {
-                  if (status is Loading) {
-                    return const CircularProgressIndicator();
-                  } else if (status is Error) {
-                    return Text('Error: ${status.error}');
-                  } else if (status is Success) {
-                    return ListView(
-                      children:
-                          fuel.todos.map((todo) => Text(todo.title)).toList(),
-                    );
-                  } else {
-                    return const Text('Idle');
-                  }
-                  // Build the UI for the Todo list
+                  return Text('Value: ${fuel.value}');
                 },
+                actions: const {IncrementFlow, DecrementFlow},
               ),
             ),
           )
-          .add(
-            Expanded(
-              child: RushWidget<UserFuel>(
-                actions: {
-                  FetchUsersAction: () {
-                    // Callback for FetchTodosAction
-                  },
-                  AddUserAction: () {
-                    // Callback for AddTodoAction
-                  },
-                },
-                builder: (context, fuel, status) {
-                  // Build the UI for the Todo list
-                  if (status is Loading) {
-                    return const CircularProgressIndicator();
-                  } else if (status is Error) {
-                    return Text('Error: ${status.error}');
-                  } else if (status is Success) {
-                    return ListView(
-                      children:
-                          fuel.users.map((user) => Text(user.name)).toList(),
-                    );
-                  } else {
-                    return const Text('Idle');
-                  }
-                },
-              ),
-            ),
-          )
+          .add(RushBuilder<UserTank>(
+            actionNotifier: {
+              FetchUsersFlow: (context, action, status) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('FetchUsersFlow status: $status')),
+                );
+              },
+            },
+            builder: (context, fuel, status) {
+              return switch (status) {
+                RushStatus.loading => const CircularProgressIndicator(),
+                RushStatus.success => ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: fuel.users?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(fuel.users![index].name),
+                      );
+                    },
+                  ),
+                RushStatus.idle => const Text('Idle'),
+                RushStatus.error => const Text('Error'),
+              };
+            },
+            actions: const {FetchUsersFlow},
+          ))
           .add(const Text("Child 1").rush.xl6.red700.apply())
           .add(const Text("Child 2").rush.xl6.red700.apply())
           .add(const Text("Child 3").rush.xl6.red500.apply())

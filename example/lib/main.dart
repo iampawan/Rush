@@ -5,16 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:rush/rush.dart';
 
 void main() {
-  RushEngine().init(
-    fuels: {
-      TodoFuel: TodoFuel(),
-      UserFuel: UserFuel(),
-    },
-    middlewares: [
-      LoggingMiddleware(),
-      ErrorHandlingMiddleware(),
-    ],
-  );
+  RushEngine.withFuel(UserTank());
+  RushEngine.addMiddleware(LoggingMiddleware());
   runApp(const MyApp());
 }
 

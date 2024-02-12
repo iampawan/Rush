@@ -1,101 +1,48 @@
-// models.dart
-
 import 'package:rush/rush.dart';
 
-class Todo {
-  final String title;
+class UserTank extends RushTank {
+  int value = 0;
+  List<User>? users;
+}
 
-  Todo({required this.title});
+class IncrementFlow extends RushFlow<UserTank> with RushChain<int> {
+  @override
+  dynamic execute() {
+    return fuel!.value += 2;
+  }
+
+  @override
+  dynamic fork(int result) {
+    return DecrementFlow(result);
+  }
+}
+
+class DecrementFlow extends RushFlow<UserTank> {
+  DecrementFlow(this.amount);
+
+  final int amount;
+
+  @override
+  dynamic execute() {
+    fuel!.value -= amount;
+  }
 }
 
 class User {
-  final String name;
-
   User({required this.name});
+
+  final String name;
 }
 
-// fuels.dart
-
-class TodoFuel extends RushFuel {
-  List<Todo> todos = [];
-
-  void setTodos(List<Todo> todos) {
-    this.todos = todos;
-  }
-
-  void addTodo(Todo todo) {
-    todos.add(todo);
-  }
-}
-
-class UserFuel extends RushFuel {
-  List<User> users = [];
-
-  void setUsers(List<User> users) {
-    this.users = users;
-  }
-
-  void addUser(User user) {
-    users.add(user);
-  }
-}
-
-// actions.dart
-
-class FetchTodosAction extends RushAction<TodoFuel> {
+class FetchUsersFlow extends RushFlow<UserTank> {
   @override
-  Future<void> execute(TodoFuel fuel) async {
-    try {
-      var todos =
-          await fetchTodosFromServer(); // Replace with your async function
-      fuel.setTodos(todos);
-    } catch (e) {
-      onException(e, StackTrace.current);
-    }
-  }
+  dynamic execute() async {
+    await Future.delayed(const Duration(seconds: 2)); // Simulate network delay.
 
-  fetchTodosFromServer() async {
-    await Future.delayed(const Duration(seconds: 2));
-    return [Todo(title: "1"), Todo(title: "2")];
-  }
-}
-
-class AddTodoAction extends RushAction<TodoFuel> {
-  final Todo todo;
-
-  AddTodoAction(this.todo);
-
-  @override
-  Future<void> execute(TodoFuel fuel) async {
-    fuel.addTodo(todo);
-  }
-}
-
-class FetchUsersAction extends RushAction<UserFuel> {
-  @override
-  Future<void> execute(UserFuel fuel) async {
-    try {
-      var users =
-          await fetchUsersFromServer(); // Replace with your async function
-      fuel.setUsers(users);
-    } catch (e) {
-      onException(e, StackTrace.current);
-    }
-  }
-
-  fetchUsersFromServer() async {
-    await Future.delayed(const Duration(seconds: 2));
-    return [User(name: "Pawan")];
-  }
-}
-
-class AddUserAction extends RushAction<UserFuel> {
-  final User user;
-
-  AddUserAction(this.user);
-
-  @override
-  Future<void> execute(UserFuel fuel) async {
-    fuel.addUser(user);
+    fuel!.users = [
+      User(name: 'Alice'),
+      User(name: 'Bob'),
+      User(name: 'Charlie'),
+    ];
   }
 }

@@ -24,8 +24,6 @@ mixin RushColorMixin<T> {
   /// The color used on rush widgets.
   Color? rushColor;
 
-  @protected
-
   /// Sets the child color.
   set childToColor(T child) {
     _childToColor = child;

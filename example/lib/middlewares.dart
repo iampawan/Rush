@@ -1,20 +1,14 @@
-// middlewares.dart
-
-import 'package:rush/rush.dart';
 import 'package:rush/rush.dart';
 
-class LoggingMiddleware implements RushMiddleware {
+class LoggingMiddleware extends RushMiddleware {
   @override
-  void call(RushAction action) {
-    print('Dispatching ${action.runtimeType}');
+  bool preFlow(RushFlow action) {
+    print('Starting ${action.runtimeType}');
+    return true;
   }
-}
 
-class ErrorHandlingMiddleware implements RushMiddleware {
   @override
-  void call(RushAction action) {
-    if (action.status is Error) {
-      print('Error: ${(action.status as Error).error}');
-    }
+  void postFlow(RushFlow action) {
+    print('Finished ${action.runtimeType} with status ${action.status}');
   }
 }
