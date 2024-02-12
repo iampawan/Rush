@@ -1,7 +1,20 @@
 import 'package:example/home.dart';
+import 'package:example/middlewares.dart';
+import 'package:example/models.dart';
 import 'package:flutter/material.dart';
+import 'package:rush/rush.dart';
 
 void main() {
+  RushEngine().init(
+    fuels: {
+      TodoFuel: TodoFuel(),
+      UserFuel: UserFuel(),
+    },
+    middlewares: [
+      LoggingMiddleware(),
+      ErrorHandlingMiddleware(),
+    ],
+  );
   runApp(const MyApp());
 }
 
@@ -21,4 +34,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
