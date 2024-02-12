@@ -412,6 +412,20 @@ class RushFlexBuilder extends RushWidgetBuilder<Widget> {
     return this;
   }
 
+
+
+  /// Sets the direction of the flex container to the specified axis.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// Column().rush.axis(Axis.vertical).add(Text('Child 1')).apply();
+  /// Row().rush.axis(Axis.horizontal).add(Text('Child 1')).apply();
+  /// ```
+  RushFlexBuilder axis(Axis value) {
+    _direction = value;
+    return this;
+  }
+
   /// Sets the vertical direction of the flex container to up.
   ///
   /// Example usage:

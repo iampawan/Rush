@@ -20,6 +20,13 @@ class HomePage extends StatelessWidget {
           .add(const Text("Child 3").rush.xl6.red500.apply())
           .add(const Text("Child 4").rush.xl6.red500.apply())
           .add(const Text("Child 5").rush.xl6.red500.apply())
+          .add(Container()
+              .rush
+              .height(100)
+              .widthInPercentage(context, 80)
+              .gradientFromAndTo(from: Rush.red500, to: Rush.green400)
+              .padding(Rush.e16)
+              .apply())
           .center
           .applyWithPadding(),
     );
