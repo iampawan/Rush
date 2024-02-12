@@ -1,126 +1,119 @@
-// rush_widget.dart
-
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
-import 'package:rush/src/state/rush_engine.dart';
-import 'package:rush/src/state/rush_state.dart';
+import 'package:flutter/material.dart';
+import 'package:rush/rush.dart';
 
-class RushProvider extends InheritedWidget {
-  const RushProvider({required this.engine, required super.child, super.key});
-  final RushEngine engine;
-
-  @override
-  bool updateShouldNotify(RushProvider oldWidget) => engine != oldWidget.engine;
-
-  static RushProvider of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<RushProvider>()!;
-  }
-}
-
-typedef RushStateWidgetBuilder<T> = Widget Function(
-  BuildContext context,
-  T fuel,
-  RushStatus status,
-);
-
-class RushWidget<T extends RushFuel> extends StatefulWidget {
-  const RushWidget({
+class RushBuilder<T> extends StatefulWidget {
+  const RushBuilder({
     required this.builder,
     required this.actions,
     super.key,
+    this.notifications,
   });
+
+  /// [builder] provides the child widget to rendered.
   final RushStateWidgetBuilder<T> builder;
-  final Map<Type, Function> actions;
+
+  /// Widget will rerender every time any of [actions] executes.
+  final Set<Type> actions;
+
+  /// Map of mutations and their corresponding callback
+  final Map<Type, ContextCallback>? notifications;
 
   @override
-  _RushWidgetState createState() => _RushWidgetState<T>();
+  _RushBuilderState createState() => _RushBuilderState<T>();
 }
 
-class _RushWidgetState<T extends RushFuel> extends State<RushWidget<T>> {
-  StreamSubscription? _subscription;
-  RushStatus _status = RushStatus.idle();
-  Object? _error;
+class _RushBuilderState<T> extends State<RushBuilder<T>> {
+  StreamSubscription? eventSub;
 
   @override
   void initState() {
     super.initState();
-    final engine = RushEngine();
-    _subscription = engine.actions.listen((action) {
-      if (widget.actions.containsKey(action.runtimeType)) {
-        widget.actions[action.runtimeType]?.call();
-      }
-      if (action.status is Error) {
-        setState(() {
-          _status = action.status;
-          _error = (action.status as Error).error;
-        });
-      }
-    });
+    if (widget.notifications != null) {
+      final notifications = widget.notifications!.keys.toSet();
+      final stream = RushEngine.events.where(
+        (e) => notifications.contains(e.runtimeType),
+      );
+      eventSub = stream.listen((e) {
+        widget.notifications![e.runtimeType]
+            ?.call(context, e, status: e.status);
+      });
+    }
   }
 
   @override
   void dispose() {
-    _subscription?.cancel();
+    eventSub?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final rushEngine = RushEngine();
-    return StreamBuilder<RushAction>(
-      stream: rushEngine.actions,
-      builder: (context, snapshot) {
-        if (snapshot.hasData &&
-            widget.actions.containsKey(snapshot.data.runtimeType)) {
-          return widget.builder(
-            context,
-            rushEngine.getFuel<T>(),
-            snapshot.data!.status,
-          );
+    final stream = RushEngine.events.where(
+      (e) => widget.actions.contains(e.runtimeType),
+    );
+    return StreamBuilder<RushFlow>(
+      stream: stream,
+      builder: (context, action) {
+        RushStatus? status;
+        if (!action.hasData ||
+            action.connectionState == ConnectionState.waiting) {
+          status = RushStatus.idle;
         } else {
-          return widget.builder(
-            context,
-            rushEngine.getFuel<T>(),
-            RushStatus.idle(),
-          );
+          status = action.data?.status;
         }
+        final store = RushEngine.fuel as T;
+        return widget.builder(context, store, status);
       },
     );
   }
 }
 
+typedef ContextCallback = void Function(
+  BuildContext context,
+  RushFlow action, {
+  RushStatus? status,
+});
+
 class RushNotifier extends StatefulWidget {
+  /// [RushNotifier] make callbacks for given actions
   const RushNotifier({required this.actions, super.key, this.child});
+
+  /// Optional child widget
   final Widget? child;
-  final Map<Type, Function> actions;
+
+  /// Map of mutations and their corresponding callback
+  final Map<Type, ContextCallback> actions;
 
   @override
   _RushNotifierState createState() => _RushNotifierState();
 }
 
 class _RushNotifierState extends State<RushNotifier> {
-  StreamSubscription? _subscription;
+  StreamSubscription? eventSub;
 
   @override
   void initState() {
     super.initState();
-    final engine = RushEngine();
-    _subscription = engine.actions.listen((action) {
-      if (widget.actions.containsKey(action.runtimeType)) {
-        widget.actions[action.runtimeType]?.call();
-      }
+    final mutations = widget.actions.keys.toSet();
+    final stream = RushEngine.events.where(
+      (e) => mutations.contains(e.runtimeType),
+    );
+    eventSub = stream.listen((e) {
+      widget.actions[e.runtimeType]?.call(context, e, status: e.status);
     });
   }
 
   @override
   void dispose() {
-    _subscription?.cancel();
+    eventSub?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // allow null child
     return widget.child ?? const SizedBox();
   }
 }

@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
         title: const Text('Rush'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           AddTodoAction(Todo(title: 'New Todo'));
           AddUserAction(User(name: 'New User'));
         },

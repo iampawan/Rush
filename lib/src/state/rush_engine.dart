@@ -1,63 +1,102 @@
-// rush_engine.dart
-
 import 'dart:async';
 
-import 'package:rush/src/state/rush_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-abstract class RushMiddleware {
-  void call(RushAction action);
-}
+part 'rush_flow.dart';
 
-class RushEngine {
-  factory RushEngine() {
-    return _singleton;
-  }
+typedef RushStateWidgetBuilder<T> = Widget Function(
+  BuildContext context,
+  T fuel,
+  RushStatus? status,
+);
 
-  RushEngine._internal();
-  static final RushEngine _singleton = RushEngine._internal();
+enum RushStatus { idle, loading, success, error }
 
-  final Map<Type, RushFuel> fuels = {};
-  final _controller = StreamController<RushAction>.broadcast();
-  final List<RushMiddleware> middlewares = [];
+abstract class RushFuel {}
 
-  void init({
-    Map<Type, RushFuel> fuels = const {},
+class RushEngine extends StatelessWidget {
+  /// Constructor collects the store instance and interceptors.
+  RushEngine({
+    required RushFuel fuel,
+    required this.child,
+    super.key,
     List<RushMiddleware> middlewares = const [],
   }) {
-    this.fuels.addAll(fuels);
-    this.middlewares.addAll(middlewares);
+    RushEngine._fuel = fuel;
+    RushEngine._middlewares = middlewares;
   }
 
-  Stream<RushAction> get actions => _controller.stream;
+  final Widget? child;
 
-  T getFuel<T extends RushFuel>() {
-    return fuels[T]! as T;
+  static late List<RushMiddleware> _middlewares;
+
+  static final StreamController<RushFlow<RushFuel?>> _events =
+      StreamController<RushFlow>.broadcast();
+
+  static Stream<RushFlow> get events => _events.stream;
+
+  static late RushFuel? _fuel;
+
+  static RushFuel get fuel => _fuel!;
+
+  static final Set<Type> _buffer = <Type>{};
+
+  static void notify(RushFlow action) {
+    _buffer.add(action.runtimeType);
+    _events.add(action);
   }
 
-  Future<RushStatus> getStatus<T extends RushFuel>() async {
-    final fuelType = T;
-    final lastAction = await _controller.stream
-        .where((action) => action is RushAction<T>)
-        .last;
-    return lastAction.status;
+  /// Filters the main event stream with the mutation
+  /// given as parameter. This can be used to perform some callbacks inside
+  /// widgets after some mutation executed.
+  static Stream<RushFlow> streamOf(Type mutation) {
+    return _events.stream.where((e) => e.runtimeType == mutation);
   }
 
-  void dispatch<T extends RushFuel>(RushAction<T> action) {
-    action.status = RushStatus.loading();
-    _controller.add(action);
-    for (final middleware in middlewares) {
-      middleware(action);
+  /// Attaches context to the mutations given in `on` param.
+  /// When a mutation specified execute widget will rebuild.
+  static void watch(BuildContext context, {required List<Type> on}) {
+    for (final mutant in on) {
+      context.dependOnInheritedWidgetOfExactType<_RushModel>(
+        aspect: mutant,
+      );
     }
-    action.execute(getFuel<T>()).then((_) {
-      action.status = RushStatus.success();
-      _controller.add(action);
-    }).catchError((Object e, StackTrace s) {
-      action.onException(e, s);
-      _controller.add(action);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    events.forEach((element) {
+      properties.add(
+        DiagnosticsProperty(
+          element.runtimeType.toString(),
+          element.fuel.toString(),
+        ),
+      );
     });
   }
 
-  void dispose() {
-    _controller.close();
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: _events.stream,
+      builder: (context, _) {
+        // Copy all the mutations that executed before
+        // current build and clear that buffer
+        // ignore: prefer_typing_uninitialized_variables
+        Set<Type> clone;
+        if (_buffer.isNotEmpty) {
+          clone = <Type>{}..addAll(_buffer);
+          _buffer.clear();
+        } else {
+          clone = _buffer;
+        }
+
+        // Rebuild inherited model with all the mutations
+        // inside "clone" as the aspects changed
+        return _RushModel(recent: clone, child: child!);
+      },
+    );
   }
 }
