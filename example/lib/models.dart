@@ -1,14 +1,17 @@
 import 'package:rush/rush.dart';
 
 class UserTank extends RushTank {
-  int value = 0;
   List<User>? users;
 }
 
-class IncrementFlow extends RushFlow<UserTank> with RushChain<int> {
+class CounterTank extends RushTank {
+  int value = 0;
+}
+
+class IncrementFlow extends RushFlow<CounterTank> with RushChain<int> {
   @override
   dynamic execute() {
-    return fuel!.value += 2;
+    return tank.value += 2;
   }
 
   @override
@@ -17,14 +20,14 @@ class IncrementFlow extends RushFlow<UserTank> with RushChain<int> {
   }
 }
 
-class DecrementFlow extends RushFlow<UserTank> {
+class DecrementFlow extends RushFlow<CounterTank> {
   DecrementFlow(this.amount);
 
   final int amount;
 
   @override
   dynamic execute() {
-    fuel!.value -= amount;
+    tank.value -= amount;
   }
 }
 
@@ -39,7 +42,7 @@ class FetchUsersFlow extends RushFlow<UserTank> {
   dynamic execute() async {
     await Future.delayed(const Duration(seconds: 2)); // Simulate network delay.
 
-    fuel!.users = [
+    tank.users = [
       User(name: 'Alice'),
       User(name: 'Bob'),
       User(name: 'Charlie'),

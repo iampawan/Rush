@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rush/rush.dart';
 
 /// A widget that builds itself based on the latest snapshot of interaction with a [RushEngine].
-class RushBuilder<T> extends StatefulWidget {
+class RushBuilder<T extends RushTank> extends StatefulWidget {
   const RushBuilder({
     required this.builder,
     required this.actions,
@@ -20,7 +20,7 @@ class RushBuilder<T> extends StatefulWidget {
   _RushBuilderState createState() => _RushBuilderState<T>();
 }
 
-class _RushBuilderState<T> extends State<RushBuilder<T>> {
+class _RushBuilderState<T extends RushTank> extends State<RushBuilder<T>> {
   StreamSubscription? eventSub;
 
   @override
@@ -56,8 +56,8 @@ class _RushBuilderState<T> extends State<RushBuilder<T>> {
       stream: stream,
       builder: (context, action) {
         final status = action.data?.status ?? RushStatus.idle;
-        final store = RushEngine.tank as T;
-        return widget.builder(context, store, status);
+        final tank = RushEngine.getTank<T>();
+        return widget.builder(context, tank, status);
       },
     );
   }
@@ -87,9 +87,9 @@ class _RushNotifierState extends State<RushNotifier> {
   @override
   void initState() {
     super.initState();
-    final mutations = widget.actions.keys.toSet();
+    final actions = widget.actions.keys.toSet();
     final stream = RushEngine.events.where(
-      (e) => mutations.contains(e.runtimeType),
+      (e) => actions.contains(e.runtimeType),
     );
     eventSub = stream.listen((e) {
       final status = e.status;

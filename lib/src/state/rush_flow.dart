@@ -4,13 +4,13 @@ part of 'rush_engine.dart';
 typedef RushFlowBuilder = RushFlow Function();
 
 /// An abstract class representing a RushFlow.
-abstract class RushFlow<T extends RushTank?> {
+abstract class RushFlow<T extends RushTank> {
   RushFlow() {
     _status = RushStatus.idle;
     _run();
   }
 
-  T? get fuel => RushEngine.tank as T?;
+  T get tank => RushEngine.getTank<T>();
 
   RushStatus get status => _status;
   late RushStatus _status;

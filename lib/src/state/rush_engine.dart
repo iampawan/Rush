@@ -12,19 +12,26 @@ abstract class RushTank {}
 class RushEngine {
   RushEngine._();
 
-  static late RushTank _tank;
-  static final _controller = StreamController<RushFlow>.broadcast();
+  static final _controller = StreamController<RushFlow<RushTank>>.broadcast();
   static final _middlewares = <RushMiddleware>[];
 
   /// The tank/storage for this engine.
-  static RushTank get tank => _tank;
+  static final Map<Type, RushTank> _tanks = {};
 
   /// The events of this engine.
-  static Stream<RushFlow> get events => _controller.stream;
+  static Stream<RushFlow<RushTank>> get events => _controller.stream;
 
-  /// Initializes the engine with the given fuel.
-  static void withFuel(RushTank fuel) {
-    _tank = fuel;
+  /// Initializes the engine with the given tank.
+  static void registerTank<T extends RushTank>(T tank) {
+    _tanks[T] = tank;
+  }
+
+  /// Gets the tank of the given type.
+  static T getTank<T extends RushTank>() {
+    if (!_tanks.containsKey(T)) {
+      throw Exception('No tank of type $T registered');
+    }
+    return _tanks[T]! as T;
   }
 
   /// Adds a middleware to this engine.

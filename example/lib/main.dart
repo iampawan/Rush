@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:rush/rush.dart';
 
 void main() {
-  RushEngine.withFuel(UserTank());
+  RushEngine.registerTank<UserTank>(UserTank());
+  RushEngine.registerTank<CounterTank>(CounterTank());
   RushEngine.addMiddleware(LoggingMiddleware());
   runApp(const MyApp());
 }

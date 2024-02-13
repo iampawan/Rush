@@ -7,6 +7,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tank = RushEngine.getTank<CounterTank>();
+    print(tank.value);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Rush'),
@@ -49,9 +51,9 @@ class HomePage extends StatelessWidget {
                   );
                 },
               },
-              child: RushBuilder<UserTank>(
-                builder: (context, fuel, status) {
-                  return Text('Value: ${fuel.value}');
+              child: RushBuilder<CounterTank>(
+                builder: (context, tank, status) {
+                  return Text('Value: ${tank.value}');
                 },
                 actions: const {IncrementFlow, DecrementFlow},
               ),
@@ -65,15 +67,15 @@ class HomePage extends StatelessWidget {
                 );
               },
             },
-            builder: (context, fuel, status) {
+            builder: (context, store, status) {
               return switch (status) {
                 RushStatus.loading => const CircularProgressIndicator(),
                 RushStatus.success => ListView.builder(
                     shrinkWrap: true,
-                    itemCount: fuel.users?.length ?? 0,
+                    itemCount: store.users?.length ?? 0,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(fuel.users![index].name),
+                        title: Text(store.users![index].name),
                       );
                     },
                   ),
@@ -85,9 +87,6 @@ class HomePage extends StatelessWidget {
           ))
           .add(const Text("Child 1").rush.xl6.red700.apply())
           .add(const Text("Child 2").rush.xl6.red700.apply())
-          .add(const Text("Child 3").rush.xl6.red500.apply())
-          .add(const Text("Child 4").rush.xl6.red500.apply())
-          .add(const Text("Child 5").rush.xl6.red500.apply())
           .add(Container()
               .rush
               .height(100)
@@ -95,7 +94,6 @@ class HomePage extends StatelessWidget {
               .gradientFromAndTo(from: Rush.red500, to: Rush.green400)
               .padding(Rush.e16)
               .apply())
-          .center
           .applyWithPadding(),
     );
   }
