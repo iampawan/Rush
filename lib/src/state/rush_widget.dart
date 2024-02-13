@@ -8,9 +8,15 @@ import 'package:rush/rush.dart';
 /// Example:
 /// ```dart
 /// RushBuilder<MyTank>(
-///   builder: (context, tank, status) {
+///   builder: (context, tank) {
 ///     //= Build UI based on tank and status
 ///   },
+/// loadingBuilder: (context) {
+///   return Center(child: CircularProgressIndicator());
+/// },
+/// errorBuilder: (context, error) {
+///   return Center(child: Text('An error occurred: $error'));
+/// },
 /// )
 /// ```
 class RushBuilder<T extends RushTank> extends StatefulWidget {
@@ -18,15 +24,38 @@ class RushBuilder<T extends RushTank> extends StatefulWidget {
   const RushBuilder({
     required this.builder,
     required this.actions,
+    this.loadingBuilder,
+    this.errorBuilder,
     this.actionNotifier,
     super.key,
   });
 
   /// The builder for this widget.
-  final Widget Function(BuildContext, T, RushStatus) builder;
+  final Widget Function(BuildContext, T) builder;
+
+  /// A builder function that returns a widget to display
+  /// when the state is loading.
+  ///
+  /// Example:
+  /// ```dart
+  /// loadingBuilder: (context) {
+  ///   return Center(child: CircularProgressIndicator());
+  /// },
+  /// ```
+  final Widget Function(BuildContext)? loadingBuilder;
+
+  /// A builder function that returns a widget to display when an error occurs.
+  ///
+  /// Example:
+  /// ```dart
+  /// errorBuilder: (context, error) {
+  ///   return Center(child: Text('An error occurred: $error'));
+  /// },
+  /// ```
+  final Widget Function(BuildContext, Object)? errorBuilder;
 
   /// A map of [RushFlow] actions to be notified.
-  final Map<Type, ContextCallback>? actionNotifier;
+  final Map<Type, ContextCallbackWithStatus>? actionNotifier;
 
   /// The actions to listen to.
   final Set<Type>? actions;
@@ -37,17 +66,15 @@ class RushBuilder<T extends RushTank> extends StatefulWidget {
 }
 
 class _RushBuilderState<T extends RushTank> extends State<RushBuilder<T>> {
-
-
   StreamSubscription<RushFlow>? eventSub;
 
   @override
   void initState() {
     super.initState();
     if (widget.actionNotifier != null) {
-      final mutations = widget.actionNotifier!.keys.toSet();
+      final actions = widget.actionNotifier!.keys.toSet();
       final stream = RushEngine.events.where(
-        (e) => mutations.contains(e.runtimeType),
+        (e) => actions.contains(e.runtimeType),
       );
       eventSub = stream.listen((e) {
         final status = e.status;
@@ -74,20 +101,36 @@ class _RushBuilderState<T extends RushTank> extends State<RushBuilder<T>> {
       stream: stream,
       builder: (context, action) {
         final status = action.data?.status ?? RushStatus.idle;
+        if (status == RushStatus.loading) {
+          if (widget.loadingBuilder != null) {
+            return widget.loadingBuilder!(context);
+          }
+          return const Center(child: CircularProgressIndicator.adaptive());
+        } else if (status == RushStatus.error) {
+          if (widget.errorBuilder != null) {
+            return widget.errorBuilder!(context, action.error!);
+          }
+          return const Center(child: Text('An error occurred'));
+        }
         final tank = RushEngine.getTank<T>();
-        return widget.builder(context, tank, status);
+        return widget.builder(context, tank);
       },
     );
   }
 }
 
 /// A function that is called when a [RushFlow] action occurs.
-typedef ContextCallback = void Function(
+typedef ContextCallbackWithStatus = void Function(
   BuildContext context,
   RushFlow action,
   RushStatus status,
 );
 
+/// A function that is called when a [RushFlow] action occurs.
+typedef ContextCallback = void Function(
+  BuildContext context,
+  RushFlow action,
+);
 
 /// A widget that notifies listeners when specific [RushFlow] actions occur.
 ///
@@ -103,7 +146,6 @@ typedef ContextCallback = void Function(
 /// )
 /// ```
 class RushNotifier extends StatefulWidget {
-
   /// Creates a new [RushNotifier] instance.
   const RushNotifier({required this.actions, super.key, this.child});
 
@@ -111,8 +153,7 @@ class RushNotifier extends StatefulWidget {
   final Widget? child;
 
   /// The actions to listen to.
-  final Map<Type, ContextCallback> actions;
-
+  final Map<Type, ContextCallbackWithStatus> actions;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -120,8 +161,6 @@ class RushNotifier extends StatefulWidget {
 }
 
 class _RushNotifierState extends State<RushNotifier> {
-
-
   StreamSubscription<dynamic>? eventSub;
 
   @override

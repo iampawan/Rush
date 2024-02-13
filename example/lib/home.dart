@@ -20,7 +20,6 @@ class HomePage extends StatelessWidget {
             FloatingActionButton(
               onPressed: () async {
                 DecrementFlow(1);
-                FetchUsersFlow();
               },
               child: const Icon(Icons.add),
             ),
@@ -52,7 +51,7 @@ class HomePage extends StatelessWidget {
                 },
               },
               child: RushBuilder<CounterTank>(
-                builder: (context, tank, status) {
+                builder: (context, tank) {
                   return Text('Value: ${tank.value}');
                 },
                 actions: const {IncrementFlow, DecrementFlow},
@@ -67,21 +66,16 @@ class HomePage extends StatelessWidget {
                 );
               },
             },
-            builder: (context, store, status) {
-              return switch (status) {
-                RushStatus.loading => const CircularProgressIndicator(),
-                RushStatus.success => ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: store.users?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(store.users![index].name),
-                      );
-                    },
-                  ),
-                RushStatus.idle => const Text('Idle'),
-                RushStatus.error => const Text('Error'),
-              };
+            builder: (context, tank) {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: tank.users?.length ?? 0,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(tank.users![index].name),
+                  );
+                },
+              );
             },
             actions: const {FetchUsersFlow},
           ))
