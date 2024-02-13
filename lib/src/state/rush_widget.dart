@@ -3,8 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rush/rush.dart';
 
-/// A widget that builds itself based on the latest snapshot of interaction with a [RushEngine].
+/// A widget that builds its descendants based on the state of a [RushTank].
+///
+/// Example:
+/// ```dart
+/// RushBuilder<MyTank>(
+///   builder: (context, tank, status) {
+///     //= Build UI based on tank and status
+///   },
+/// )
+/// ```
 class RushBuilder<T extends RushTank> extends StatefulWidget {
+  /// Creates a new [RushBuilder] instance.
   const RushBuilder({
     required this.builder,
     required this.actions,
@@ -12,16 +22,24 @@ class RushBuilder<T extends RushTank> extends StatefulWidget {
     super.key,
   });
 
+  /// The builder for this widget.
   final Widget Function(BuildContext, T, RushStatus) builder;
+
+  /// A map of [RushFlow] actions to be notified.
   final Map<Type, ContextCallback>? actionNotifier;
+
+  /// The actions to listen to.
   final Set<Type>? actions;
 
   @override
+  // ignore: library_private_types_in_public_api
   _RushBuilderState createState() => _RushBuilderState<T>();
 }
 
 class _RushBuilderState<T extends RushTank> extends State<RushBuilder<T>> {
-  StreamSubscription? eventSub;
+
+
+  StreamSubscription<RushFlow>? eventSub;
 
   @override
   void initState() {
@@ -70,19 +88,41 @@ typedef ContextCallback = void Function(
   RushStatus status,
 );
 
-/// A widget that notifies its descendants of [RushFlow] actions.
+
+/// A widget that notifies listeners when specific [RushFlow] actions occur.
+///
+/// Example:
+/// ```dart
+/// RushNotifier(
+///   actions: {
+///     MyAction: (context, action, status) {
+///       // Handle the action and status here
+///     },
+///   },
+///   child: MyChildWidget(),
+/// )
+/// ```
 class RushNotifier extends StatefulWidget {
+
+  /// Creates a new [RushNotifier] instance.
   const RushNotifier({required this.actions, super.key, this.child});
 
+  /// The child widget.
   final Widget? child;
+
+  /// The actions to listen to.
   final Map<Type, ContextCallback> actions;
 
+
   @override
+  // ignore: library_private_types_in_public_api
   _RushNotifierState createState() => _RushNotifierState();
 }
 
 class _RushNotifierState extends State<RushNotifier> {
-  StreamSubscription? eventSub;
+
+
+  StreamSubscription<dynamic>? eventSub;
 
   @override
   void initState() {

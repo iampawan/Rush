@@ -1,9 +1,43 @@
 import 'dart:async';
 
+import 'package:rush/src/rush.dart';
+
 part 'rush_flow.dart';
 
 /// An enum representing the status of a RushFlow.
-enum RushStatus { idle, loading, success, error }
+enum RushStatus {
+  /// Represents the idle state.
+  ///
+  /// Example:
+  /// ```
+  /// RushStatus status = RushStatus.idle;
+  /// ```
+  idle,
+
+  /// Represents the loading state.
+  ///
+  /// Example:
+  /// ```
+  /// RushStatus status = RushStatus.loading;
+  /// ```
+  loading,
+
+  /// Represents the success state.
+  ///
+  /// Example:
+  /// ```
+  /// RushStatus status = RushStatus.success;
+  /// ```
+  success,
+
+  /// Represents the error state.
+  ///
+  /// Example:
+  /// ```
+  /// RushStatus status = RushStatus.error;
+  /// ```
+  error
+}
 
 /// An abstract class representing a RushTank.
 abstract class RushTank {}

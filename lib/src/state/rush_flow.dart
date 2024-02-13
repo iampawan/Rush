@@ -5,14 +5,21 @@ typedef RushFlowBuilder = RushFlow Function();
 
 /// An abstract class representing a RushFlow.
 abstract class RushFlow<T extends RushTank> {
+  /// Constructs a new instance of [RushFlow].
+  ///
+  /// Sets the initial status to [RushStatus.idle] and starts the
+  /// flow execution.
   RushFlow() {
     _status = RushStatus.idle;
     _run();
   }
 
+  /// The RushTank associated with this RushFlow.
   T get tank => RushEngine.getTank<T>();
 
+  /// The current status of the RushFlow.
   RushStatus get status => _status;
+
   late RushStatus _status;
 
   final List<RushFlowBuilder> _postActions = [];
@@ -55,24 +62,35 @@ abstract class RushFlow<T extends RushTank> {
     }
   }
 
+  /// Moves to the next action in the RushFlow.
+  ///
+  /// The [actionBuilder] is a function that returns the next RushFlow.
   void next(RushFlowBuilder actionBuilder) {
     _postActions.add(actionBuilder);
   }
 
+  /// Executes the RushFlow.
   dynamic execute();
 
+  /// Handles the exception that occurs during the execution of the RushFlow.
   void onException(dynamic e, StackTrace s) {
-    print(e);
-    print(s);
+    Rush.log(e);
+    Rush.log(s);
   }
 }
 
+/// A mixin that allows a RushFlow to fork into another RushFlow.
 mixin RushChain<T> {
+  /// Forks the RushFlow into another RushFlow.
   dynamic fork(T result);
 }
 
+/// An abstract class representing a RushMiddleware.
 abstract class RushMiddleware {
+  /// A function that is called before the execution of a RushFlow.
   bool preFlow(RushFlow action);
+
+  /// A function that is called after the execution of a RushFlow.
 
   void postFlow(RushFlow action);
 }
