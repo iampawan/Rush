@@ -1820,6 +1820,12 @@ mixin Rush {
     }
   }
 
+  /// generate 6 digit random pin
+  static String generatePin({int digits = 6}) {
+    final randomMax = (pow(10, digits) - 1).toInt();
+    return Random().nextInt(randomMax).toString().padLeft(digits, '0');
+  }
+
   /// Copies the provided data to the clipboard.
   static Future<void> toClipboard(String data) =>
       Clipboard.setData(ClipboardData(text: data));
