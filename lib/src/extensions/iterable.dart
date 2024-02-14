@@ -1,5 +1,6 @@
 import 'dart:math';
 
+/// Extensions for iterables.
 extension RushBasicIterableExtensions<T> on Iterable<T> {
   /// Returns the first element, or null if the iterable is empty.
   /// Example: `[].firstOrNull()` returns `null`.
@@ -61,6 +62,7 @@ extension RushBasicIterableExtensions<T> on Iterable<T> {
   }
 }
 
+/// Extensions for advanced iterables
 extension RushAdvancedIterableExtensions<T> on Iterable<T> {
   /// Returns the sum of all elements.
   /// Requires the generic type `T` to be a subtype of `num`.
