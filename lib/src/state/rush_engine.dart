@@ -55,7 +55,18 @@ class RushEngine {
   /// The events of this engine.
   static Stream<RushFlow<RushTank>> get events => _controller.stream;
 
-  /// Initializes the engine with the given tank.
+  /// Initializes the engine with the given tank and middlewares.
+  static void init<T extends RushTank>(
+    T tank, {
+    List<RushMiddleware>? middlewares,
+  }) {
+    registerTank(tank);
+    if (middlewares != null) {
+      _middlewares.addAll(middlewares);
+    }
+  }
+
+  /// Registers a tank with this engine.
   static void registerTank<T extends RushTank>(T tank) {
     _tanks[T] = tank;
   }

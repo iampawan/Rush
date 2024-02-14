@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:rush/rush.dart';
 
 void main() {
-  RushEngine.registerTank<UserTank>(UserTank());
+  RushEngine.init<UserTank>(UserTank(), middlewares: [LoggingMiddleware()]);
   RushEngine.registerTank<CounterTank>(CounterTank());
-  RushEngine.addMiddleware(LoggingMiddleware());
   runApp(const MyApp());
 }
 
@@ -17,13 +16,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
-    );
+    return RushThemeBuilder(builder: (context, tankTheme) {
+      print(tankTheme.isDark);
+      return MaterialApp(
+        title: 'Flutter Demo',
+        themeMode: tankTheme.themeMode,
+        theme: tankTheme.isDark
+            ? ThemeData.dark(useMaterial3: true)
+            : ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                useMaterial3: true,
+              ),
+        home: const HomePage(),
+      );
+    });
   }
 }

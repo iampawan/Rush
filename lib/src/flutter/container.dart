@@ -23,6 +23,7 @@ import 'package:rush/src/flutter/mixins/padding.dart';
 import 'package:rush/src/flutter/mixins/render.dart';
 import 'package:rush/src/flutter/mixins/rounding.dart';
 import 'package:rush/src/flutter/mixins/shadow.dart';
+import 'package:rush/src/flutter/types/neumorph.dart';
 
 /// A builder class for creating containers in Rush.
 ///
