@@ -317,3 +317,125 @@ class _MediaQueryDataProvider extends StatelessWidget {
     );
   }
 }
+
+/// A widget that provides adaptive navigation functionality.
+///
+/// This widget is used to display a navigation bar with adaptive behavior,
+/// allowing the user to select different destinations.
+///
+/// Example:
+/// ```dart
+/// RushAdaptiveNavigation(
+///   destinations: [
+///     NavigationDestination(
+///       icon: Icons.home,
+///       title: 'Home',
+///     ),
+///     NavigationDestination(
+///       icon: Icons.settings,
+///       title: 'Settings',
+///     ),
+///   ],
+///   selectedIndex: _selectedIndex,
+///   onDestinationSelected: (index) {
+///     setState(() {
+///       _selectedIndex = index;
+///     });
+///   },
+///   child: MyAdaptiveWidget(),
+/// )
+/// ```
+class RushAdaptiveNavigation extends StatelessWidget {
+  /// Creates a new [RushAdaptiveNavigation] instance.
+  const RushAdaptiveNavigation({
+    required this.destinations,
+    required this.selectedIndex,
+    required this.onDestinationSelected,
+    required this.child,
+    super.key,
+    this.backgroundColor,
+    this.elevation,
+    this.useIndicator,
+    this.indicatorColor,
+    this.indicatorShape,
+  });
+
+  /// List of navigation destinations.
+  final List<NavigationDestination> destinations;
+
+  /// The index of the currently selected destination.
+  final int selectedIndex;
+
+  /// Callback function when a destination is selected.
+  final void Function(int index) onDestinationSelected;
+
+  /// The child widget to display.
+  final Widget child;
+
+  /// The background color of the navigation bar.
+  final Color? backgroundColor;
+
+  /// The elevation of the navigation bar.
+  final double? elevation;
+
+  /// Whether to use an indicator for the selected destination.
+  final bool? useIndicator;
+
+  /// The color of the indicator.
+  final Color? indicatorColor;
+
+  /// The shape of the indicator.
+  final ShapeBorder? indicatorShape;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, dimens) {
+        // Tablet Layout
+        if (dimens.maxWidth >= 600) {
+          return Scaffold(
+            body: Row(
+              children: [
+                NavigationRail(
+                  key: key,
+                  backgroundColor: backgroundColor,
+                  indicatorShape: indicatorShape,
+                  elevation: elevation,
+                  useIndicator: useIndicator,
+                  indicatorColor: indicatorColor,
+                  extended: dimens.maxWidth >= 800,
+                  minExtendedWidth: 180,
+                  destinations: destinations
+                      .map(
+                        (e) => NavigationRailDestination(
+                          icon: e.icon,
+                          label: Text(e.label),
+                        ),
+                      )
+                      .toList(),
+                  selectedIndex: selectedIndex,
+                  onDestinationSelected: onDestinationSelected,
+                ),
+                Expanded(child: child),
+              ],
+            ),
+          );
+        }
+        // Mobile Layout
+        return Scaffold(
+          body: child,
+          bottomNavigationBar: NavigationBar(
+            key: key,
+            backgroundColor: backgroundColor,
+            indicatorColor: indicatorColor,
+            indicatorShape: indicatorShape,
+            elevation: elevation,
+            destinations: destinations,
+            selectedIndex: selectedIndex,
+            onDestinationSelected: onDestinationSelected,
+          ),
+        );
+      },
+    );
+  }
+}

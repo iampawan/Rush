@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
       body: const Column()
           .rush
           .add(
-            RushNotifier(
+            RushSyncNotifier(
               actions: {
                 IncrementFlow: (context, action, status) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
                   );
                 },
               },
-              child: RushBuilder<CounterTank>(
+              child: RushSync<CounterTank>(
                 builder: (context, tank) {
                   return Text('Value: ${tank.value}');
                 },
@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
           )
-          .add(RushBuilder<UserTank>(
+          .add(RushSync<UserTank>(
             actionNotifier: {
               FetchUsersFlow: (context, action, status) {
                 ScaffoldMessenger.of(context).showSnackBar(

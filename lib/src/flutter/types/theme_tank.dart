@@ -66,7 +66,7 @@ class RushThemeBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RushEngine.registerTank(RushThemeTank());
-    return RushBuilder<RushThemeTank>(
+    return RushSync<RushThemeTank>(
       actions: const {RushChangeThemeFlow},
       builder: (context, tank) {
         return builder?.call(context, tank) ?? const SizedBox();

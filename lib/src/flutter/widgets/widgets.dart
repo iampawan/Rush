@@ -3,6 +3,8 @@ import 'package:rush/rush.dart';
 
 export 'conditional.dart';
 export 'dark_mode.dart';
+export 'glass.dart';
+export 'hover.dart';
 export 'platforms.dart';
 export 'random_container.dart';
 export 'responsive.dart';

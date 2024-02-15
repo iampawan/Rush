@@ -21,7 +21,7 @@ import 'package:rush/rush.dart';
 ///
 /// Example:
 /// ```dart
-/// RushBuilder<MyTank>(
+/// RushSync<MyTank>(
 ///   builder: (context, tank) {
 ///     //= Build UI based on tank and status
 ///   },
@@ -33,9 +33,9 @@ import 'package:rush/rush.dart';
 /// },
 /// )
 /// ```
-class RushBuilder<T extends RushTank> extends StatefulWidget {
-  /// Creates a new [RushBuilder] instance.
-  const RushBuilder({
+class RushSync<T extends RushTank> extends StatefulWidget {
+  /// Creates a new [RushSync] instance.
+  const RushSync({
     required this.builder,
     required this.actions,
     this.loadingBuilder,
@@ -76,10 +76,10 @@ class RushBuilder<T extends RushTank> extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _RushBuilderState createState() => _RushBuilderState<T>();
+  _RushSyncState createState() => _RushSyncState<T>();
 }
 
-class _RushBuilderState<T extends RushTank> extends State<RushBuilder<T>> {
+class _RushSyncState<T extends RushTank> extends State<RushSync<T>> {
   StreamSubscription<RushFlow>? eventSub;
 
   @override
@@ -150,7 +150,7 @@ typedef ContextCallback = void Function(
 ///
 /// Example:
 /// ```dart
-/// RushNotifier(
+/// RushSyncNotifier(
 ///   actions: {
 ///     MyAction: (context, action, status) {
 ///       // Handle the action and status here
@@ -159,9 +159,9 @@ typedef ContextCallback = void Function(
 ///   child: MyChildWidget(),
 /// )
 /// ```
-class RushNotifier extends StatefulWidget {
-  /// Creates a new [RushNotifier] instance.
-  const RushNotifier({required this.actions, super.key, this.child});
+class RushSyncNotifier extends StatefulWidget {
+  /// Creates a new [RushSyncNotifier] instance.
+  const RushSyncNotifier({required this.actions, super.key, this.child});
 
   /// The child widget.
   final Widget? child;
@@ -171,10 +171,10 @@ class RushNotifier extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _RushNotifierState createState() => _RushNotifierState();
+  _RushSyncNotifierState createState() => _RushSyncNotifierState();
 }
 
-class _RushNotifierState extends State<RushNotifier> {
+class _RushSyncNotifierState extends State<RushSyncNotifier> {
   StreamSubscription<dynamic>? eventSub;
 
   @override
