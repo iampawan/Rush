@@ -81,12 +81,13 @@ class HomePage extends StatelessWidget {
             actions: const {FetchUsersFlow},
           ))
           .add(const Text("Child 1").rush.xl6.red700.apply())
-          .add(const Text("Child 2").rush.xl6.red700.apply())
+          .add(const RushHeightBox(20))
           .add(Container()
               .rush
               .height(100)
               .widthInPercentage(context, 80)
-              .gradientFromAndTo(from: Rush.red500, to: Rush.green400)
+              .rounded
+              .gradientFromAndTo(from: Rush.indigo300, to: Rush.purple600)
               .padding(Rush.e16)
               .apply())
           .applyWithPadding(),

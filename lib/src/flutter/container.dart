@@ -29,6 +29,7 @@ import 'package:rush/src/flutter/mixins/shadow.dart';
 /// This class extends the [RushWidgetBuilder] class and is used to build
 /// containers in the Rush framework. Containers are used to hold and arrange
 /// other widgets in a specific layout.
+@protected
 class RushContainerBuilder extends RushWidgetBuilder<Widget>
     with
         RushAlignmentMixin<RushContainerBuilder>,
