@@ -412,8 +412,6 @@ class RushFlexBuilder extends RushWidgetBuilder<Widget> {
     return this;
   }
 
-
-
   /// Sets the direction of the flex container to the specified axis.
   ///
   /// Example usage:

@@ -118,10 +118,12 @@
 //         autofillHints: textField.autofillHints,
 //         buildCounter: textField.buildCounter,
 //         dragStartBehavior: textField.dragStartBehavior,
-//         enableIMEPersonalizedLearning: textField.enableIMEPersonalizedLearning,
+//         enableIMEPersonalizedLearning:
+//                textField.enableIMEPersonalizedLearning,
 //         canRequestFocus: textField.canRequestFocus,
 //         clipBehavior: textField.clipBehavior,
-//         contentInsertionConfiguration: textField.contentInsertionConfiguration,
+//         contentInsertionConfiguration:
+// textField.contentInsertionConfiguration,
 //         focusNode: textField.focusNode,
 //         keyboardType: textField.keyboardType,
 //         keyboardAppearance: textField.keyboardAppearance,

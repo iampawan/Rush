@@ -11,7 +11,7 @@ mixin _RandomColor {
   }
 }
 
-/// A container widget that takes up a given [width] and [height] 
+/// A container widget that takes up a given [width] and [height]
 /// and paints itself with a random color.
 ///
 /// Example:
