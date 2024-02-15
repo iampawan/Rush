@@ -33,7 +33,7 @@ mixin RushShadowMixin<T> {
 
   /// Returns the outer shadow with small offset and blur.
   ///
-  /// This method returns a shadow with a small offset and blur, 
+  /// This method returns a shadow with a small offset and blur,
   /// providing a subtle outer shadow effect.
   T get smOuterShadow => _addShadow(
         shadows: <BoxShadow>[
@@ -47,7 +47,7 @@ mixin RushShadowMixin<T> {
 
   /// Returns the outer shadow with medium offset and blur.
   ///
-  /// This method returns a shadow with a medium offset and blur, 
+  /// This method returns a shadow with a medium offset and blur,
   /// creating a visible outer shadow effect.
   T get outerShadow => _addShadow(
         shadows: <BoxShadow>[
@@ -66,7 +66,7 @@ mixin RushShadowMixin<T> {
 
   /// Returns the outer shadow with medium offset, blur, and spread.
   ///
-  /// This method returns a shadow with a medium offset, blur, and spread, 
+  /// This method returns a shadow with a medium offset, blur, and spread,
   /// creating a more pronounced outer shadow effect.
   T get mdOuterShadow => _addShadow(
         shadows: <BoxShadow>[
@@ -87,7 +87,7 @@ mixin RushShadowMixin<T> {
 
   /// Returns the outer shadow with large offset, blur, and spread.
   ///
-  /// This method returns a shadow with a large offset, blur, and spread, 
+  /// This method returns a shadow with a large offset, blur, and spread,
   /// creating a prominent outer shadow effect.
   T get lgOuterShadow => _addShadow(
         shadows: <BoxShadow>[
@@ -108,7 +108,7 @@ mixin RushShadowMixin<T> {
 
   /// Returns the outer shadow with extra large offset, blur, and spread.
   ///
-  /// This method returns a shadow with an extra large offset, blur, and 
+  /// This method returns a shadow with an extra large offset, blur, and
   /// spread, creating a dramatic outer shadow effect.
   T get xlOuterShadow => _addShadow(
         shadows: <BoxShadow>[
@@ -129,7 +129,7 @@ mixin RushShadowMixin<T> {
 
   /// Returns the outer shadow with twice extra large offset, blur, and spread.
   ///
-  /// This method returns a shadow with twice the extra large offset, blur, 
+  /// This method returns a shadow with twice the extra large offset, blur,
   /// and spread, creating an exaggerated outer shadow effect.
   T get xl2OuterShadow => _addShadow(
         shadows: <BoxShadow>[
@@ -144,7 +144,7 @@ mixin RushShadowMixin<T> {
 
   /// Returns the outer shadow with thrice extra large offset, blur, and spread.
   ///
-  /// This method returns a shadow with thrice the extra large offset, blur, 
+  /// This method returns a shadow with thrice the extra large offset, blur,
   /// and spread, creating an intense outer shadow effect.
   T get xl3OuterShadow => _addShadow(
         shadows: <BoxShadow>[
