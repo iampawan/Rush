@@ -49,6 +49,15 @@ extension RushContextExtensions on BuildContext {
   ///  `false` otherwise.
   bool get isExtraLargeSize => screenWidth >= 1920;
 
+  /// Check if the window size is mobile.
+  bool get isMobileSized => isExtraSmallSize;
+
+  /// Check if the window size is tablet.
+  bool get isTabletSized => isExtraSmallSize && screenWidth < 1200;
+
+  /// Check if the window size is desktop.
+  bool get isDesktopSized => screenWidth >= 1200;
+
   ///
   /// Example usage:
   /// ```dart
