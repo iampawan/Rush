@@ -28,6 +28,9 @@ abstract class RushFlow<T extends RushTank> {
     _run();
   }
 
+  /// The error message associated with the RushFlow.
+  String? error;
+
   /// The RushTank associated with this RushFlow.
   T get tank => RushEngine.getTank<T>();
 
@@ -66,9 +69,7 @@ abstract class RushFlow<T extends RushTank> {
         action();
       }
     } catch (e, s) {
-      _status = RushStatus.error;
       onException(e, s);
-      RushEngine.notify(this);
     }
 
     for (final i in RushEngine._middlewares) {
@@ -88,8 +89,10 @@ abstract class RushFlow<T extends RushTank> {
 
   /// Handles the exception that occurs during the execution of the RushFlow.
   void onException(dynamic e, StackTrace s) {
-    Rush.log(e);
-    Rush.log(s);
+    error = e.toString();
+    _status = RushStatus.error;
+    RushEngine.notify(this);
+    Rush.log('Exception: $e, StackTrace: $s');
   }
 }
 

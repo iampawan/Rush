@@ -45,7 +45,7 @@ class RushSync<T extends RushTank> extends StatefulWidget {
   });
 
   /// The builder for this widget.
-  final Widget Function(BuildContext, T) builder;
+  final Widget Function(BuildContext context, T tank) builder;
 
   /// A builder function that returns a widget to display
   /// when the state is loading.
@@ -56,7 +56,7 @@ class RushSync<T extends RushTank> extends StatefulWidget {
   ///   return Center(child: CircularProgressIndicator());
   /// },
   /// ```
-  final Widget Function(BuildContext)? loadingBuilder;
+  final Widget Function(BuildContext context)? loadingBuilder;
 
   /// A builder function that returns a widget to display when an error occurs.
   ///
@@ -66,7 +66,7 @@ class RushSync<T extends RushTank> extends StatefulWidget {
   ///   return Center(child: Text('An error occurred: $error'));
   /// },
   /// ```
-  final Widget Function(BuildContext, Object)? errorBuilder;
+  final Widget Function(BuildContext context, String error)? errorBuilder;
 
   /// A map of [RushFlow] actions to be notified.
   final Map<Type, ContextCallbackWithStatus>? actionNotifier;
@@ -122,7 +122,10 @@ class _RushSyncState<T extends RushTank> extends State<RushSync<T>> {
           return const Center(child: CircularProgressIndicator.adaptive());
         } else if (status == RushStatus.error) {
           if (widget.errorBuilder != null) {
-            return widget.errorBuilder!(context, action.error!);
+            return widget.errorBuilder!(
+              context,
+              action.data!.error ?? 'An error occurred',
+            );
           }
           return const Center(child: Text('An error occurred'));
         }

@@ -45,11 +45,6 @@ class HomePage extends StatelessWidget {
                     SnackBar(content: Text('IncrementFlow status: $status')),
                   );
                 },
-                DecrementFlow: (context, action, status) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('DecrementFlow status: $status')),
-                  );
-                },
               },
               child: RushSync<CounterTank>(
                 builder: (context, tank) {
@@ -60,10 +55,17 @@ class HomePage extends StatelessWidget {
             ),
           )
           .add(RushSync<UserTank>(
+            errorBuilder: (context, error) =>
+                Center(child: Text('Error: $error')),
             actionNotifier: {
               FetchUsersFlow: (context, action, status) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('FetchUsersFlow status: $status')),
+                );
+              },
+              DecrementFlow: (context, action, status) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('DecrementFlow status: $status')),
                 );
               },
             },

@@ -26,8 +26,14 @@ class DecrementFlow extends RushFlow<CounterTank> {
   final int amount;
 
   @override
-  dynamic execute() {
-    tank.value -= amount;
+  Future<void> execute() async {
+    // tank.value -= amount;
+    if (tank.value >= 0) {
+      await Future.delayed(2.toSeconds);
+      tank.value -= amount;
+    } else {
+      throw Exception('Value cannot be negative.');
+    }
   }
 }
 

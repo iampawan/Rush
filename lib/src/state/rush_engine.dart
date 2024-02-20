@@ -60,7 +60,8 @@ abstract class RushTank {}
 class RushEngine {
   RushEngine._();
 
-  static final _controller = StreamController<RushFlow<RushTank>>.broadcast();
+  static final _controller =
+      StreamController<RushFlow<RushTank>>.broadcast(sync: true);
   static final _middlewares = <RushMiddleware>[];
 
   /// The tank/storage for this engine.
