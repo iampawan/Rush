@@ -31,6 +31,7 @@ import 'package:rush/rush.dart';
 /// errorBuilder: (context, error) {
 ///   return Center(child: Text('An error occurred: $error'));
 /// },
+/// useDefaultWidgets: true,
 /// )
 /// ```
 class RushSync<T extends RushTank> extends StatefulWidget {
@@ -41,6 +42,7 @@ class RushSync<T extends RushTank> extends StatefulWidget {
     this.loadingBuilder,
     this.errorBuilder,
     this.actionNotifier,
+    this.useDefaultWidgets = false,
     super.key,
   });
 
@@ -73,6 +75,11 @@ class RushSync<T extends RushTank> extends StatefulWidget {
 
   /// The actions to listen to.
   final Set<Type>? actions;
+
+  /// Whether to use the default loading and error widgets.
+  /// Defaults to false.
+  /// If set to true, the default loading and error widgets will be used.
+  final bool useDefaultWidgets;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -115,19 +122,20 @@ class _RushSyncState<T extends RushTank> extends State<RushSync<T>> {
       stream: stream,
       builder: (context, action) {
         final status = action.data?.status ?? RushStatus.idle;
-        if (status == RushStatus.loading) {
+        if (status == RushStatus.loading && widget.useDefaultWidgets) {
           if (widget.loadingBuilder != null) {
             return widget.loadingBuilder!(context);
           }
           return const Center(child: CircularProgressIndicator.adaptive());
-        } else if (status == RushStatus.error) {
+        } else if (status == RushStatus.error && widget.useDefaultWidgets) {
+          final error = action.data!.error ?? 'An error occurred';
           if (widget.errorBuilder != null) {
             return widget.errorBuilder!(
               context,
-              action.data!.error ?? 'An error occurred',
+              error,
             );
           }
-          return const Center(child: Text('An error occurred'));
+          return Center(child: Text(error));
         }
         final tank = RushEngine.getTank<T>();
         return widget.builder(context, tank);

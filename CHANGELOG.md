@@ -1,3 +1,6 @@
+[0.1.2] - Feb 27, 2024
+Bug Fixes.
+
 [0.1.1] - Feb 20, 2024
 Bug Fixes.
 
