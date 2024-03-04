@@ -49,7 +49,7 @@ class RushDarkModeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RushSync<RushThemeTank>(
-      builder: (context, tankTheme) {
+      builder: (context, tankTheme, status) {
         var themeMode = tankTheme.isDark ? ThemeMode.dark : ThemeMode.light;
         return showSingleIcon
             ? IconButton(

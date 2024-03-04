@@ -8,19 +8,17 @@ import 'package:rush/rush.dart';
 /// RushThemeTank themeTank = RushEngine.getTank<RushThemeTank>();
 /// ```
 class RushThemeTank extends RushTank {
-  ThemeMode _themeMode = ThemeMode.system;
-
   /// The current theme mode.
-  ThemeMode get themeMode => _themeMode;
+  ThemeMode themeMode = ThemeMode.system;
 
   /// Whether the current theme mode is dark.
-  bool get isDark => _themeMode == ThemeMode.dark;
+  bool get isDark => themeMode == ThemeMode.dark;
 
   /// Whether the current theme mode is light.
-  bool get isLight => _themeMode == ThemeMode.light;
+  bool get isLight => themeMode == ThemeMode.light;
 
   /// Whether the current theme mode is system.
-  bool get isSystem => _themeMode == ThemeMode.system;
+  bool get isSystem => themeMode == ThemeMode.system;
 }
 
 /// Represents a flow for changing the theme mode in Rush.
@@ -37,7 +35,7 @@ class RushChangeThemeFlow extends RushFlow<RushThemeTank> {
   final ThemeMode themeMode;
   @override
   void execute() {
-    tank._themeMode = themeMode;
+    tank.themeMode = themeMode;
   }
 }
 
@@ -68,7 +66,7 @@ class RushThemeBuilder extends StatelessWidget {
     RushEngine.registerTank(RushThemeTank());
     return RushSync<RushThemeTank>(
       actions: const {RushChangeThemeFlow},
-      builder: (context, tank) {
+      builder: (context, tank, status) {
         return builder?.call(context, tank) ?? const SizedBox();
       },
     );
