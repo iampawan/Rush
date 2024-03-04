@@ -151,4 +151,16 @@ extension RushAdvancedIterableExtensions<T> on Iterable<T> {
     }
     return map;
   }
+
+  /// Returns this as sorted list using the [comparator] function.
+  ///
+  /// Example:
+  /// ```dart
+  /// [3, 1, 5, 9, 7].sortedBy((a,b) => a.compareTo(b)); // [1, 3, 5, 7, 9]
+  /// ```
+  List<T> sortedBy(Comparator<T> comparator) {
+    ArgumentError.checkNotNull(comparator, 'comparator');
+    final list = toList()..sort(comparator);
+    return list;
+  }
 }

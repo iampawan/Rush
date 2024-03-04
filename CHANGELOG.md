@@ -1,3 +1,7 @@
+[0.1.3] - Mar 04, 2024
+- Added sortedBy ext for Iterable
+- Added status param in RushSync
+
 [0.1.2] - Feb 27, 2024
 Bug Fixes.
 

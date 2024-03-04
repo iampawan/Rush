@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
                 },
               },
               child: RushSync<CounterTank>(
-                builder: (context, tank) {
+                builder: (context, tank, status) {
                   return Text('Value: ${tank.value}');
                 },
                 actions: const {IncrementFlow, DecrementFlow},
@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
                 );
               },
             },
-            builder: (context, tank) {
+            builder: (context, tank, status) {
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount: tank.users?.length ?? 0,

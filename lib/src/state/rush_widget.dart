@@ -47,7 +47,8 @@ class RushSync<T extends RushTank> extends StatefulWidget {
   });
 
   /// The builder for this widget.
-  final Widget Function(BuildContext context, T tank) builder;
+  final Widget Function(BuildContext context, T tank, RushStatus status)
+      builder;
 
   /// A builder function that returns a widget to display
   /// when the state is loading.
@@ -138,7 +139,7 @@ class _RushSyncState<T extends RushTank> extends State<RushSync<T>> {
           return Center(child: Text(error));
         }
         final tank = RushEngine.getTank<T>();
-        return widget.builder(context, tank);
+        return widget.builder(context, tank, status);
       },
     );
   }
