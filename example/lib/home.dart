@@ -8,7 +8,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tank = RushEngine.getTank<CounterTank>();
-    print(tank.value);
+    Rush.log(tank.value);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Rush'),

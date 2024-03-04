@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RushThemeBuilder(builder: (context, tankTheme) {
-      print(tankTheme.isDark);
+      Rush.log(tankTheme.isDark);
       return MaterialApp(
         title: 'Flutter Demo',
         themeMode: tankTheme.themeMode,
