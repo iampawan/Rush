@@ -17,8 +17,8 @@ import 'dart:ui';
 
 import 'package:rush/src/extensions/list.dart';
 
-/// Extension Methods for the strings
-extension RushStringExtension on String {
+///  Extension Methods for the nullable strings
+extension RushNullableStringIsEmptyOrNullExtension on String? {
   /// Checks if the string is null or empty.
   ///
   /// Example:
@@ -26,7 +26,7 @@ extension RushStringExtension on String {
   /// String str = '';
   /// print(str.isNullOrEmpty); // true
   /// ```
-  bool get isNullOrEmpty => isEmpty;
+  bool get isNullOrEmpty => this == null || this!.isEmpty;
 
   /// Checks if the string is not null and not empty.
   ///
@@ -44,8 +44,11 @@ extension RushStringExtension on String {
   /// String str = '   ';
   /// print(str.isNullOrWhiteSpace); // true
   /// ```
-  bool get isNullOrWhiteSpace => trim().isEmpty;
+  bool get isNullOrWhiteSpace => this == null || this!.trim().isEmpty;
+}
 
+/// Extension Methods for the strings
+extension RushStringExtension on String {
   /// Checks if the string is a numeric value.
   ///
   /// Example:
