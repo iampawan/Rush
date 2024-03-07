@@ -79,7 +79,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().height(100).apply();
+  /// Container().rush.height(100).apply();
   /// ```
   RushContainerBuilder height(double val) => this.._height = val;
 
@@ -87,7 +87,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().width(100).apply();
+  /// Container().rush.width(100).apply();
   /// ```
   RushContainerBuilder width(double val) => this.._width = val;
 
@@ -96,7 +96,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().heightInPercentage(50).apply();
+  /// Container().rush.heightInPercentage(50).apply();
   /// ```
   RushContainerBuilder heightInPercentage(BuildContext context, double val) =>
       this.._height = context.screenHeightInPercentage * val;
@@ -106,7 +106,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().widthInPercentage(80).apply();
+  /// Container().rush.widthInPercentage(80).apply();
   /// ```
   RushContainerBuilder widthInPercentage(BuildContext context, double val) =>
       this.._width = context.screenWidthInPercentage * val;
@@ -115,7 +115,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().size(100, 200).apply();
+  /// Container().rush.size(100, 200).apply();
   /// ```
   RushContainerBuilder size(double width, double height) => this
     .._width = width
@@ -125,7 +125,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().sizeInPercentage(
+  /// Container().rush.sizeInPercentage(
   ///   context: context,
   ///   widthInPercentage: 50,
   ///   heightInPercentage: 30,
@@ -144,7 +144,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().square(100).apply();
+  /// Container().rush.square(100).apply();
   /// ```
   RushContainerBuilder square(double val) => this
     .._width = val
@@ -154,7 +154,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().decoration(BoxDecoration(color: Colors.red)).apply();
+  /// Container().rush.decoration(BoxDecoration(color: Colors.red)).apply();
   /// ```
   RushContainerBuilder decoration(BoxDecoration decoration) =>
       this.._decoration = decoration;
@@ -163,7 +163,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().foregroundDecoration(BoxDecoration(color: Colors.blue))
+  /// Container().rush.foregroundDecoration(BoxDecoration(color: Colors.blue))
   /// .apply();
   /// ```
   RushContainerBuilder foregroundDecoration(BoxDecoration decoration) =>
@@ -173,8 +173,9 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().constraints(BoxConstraints(minWidth: 100, minHeight: 100))
-  /// .apply();
+  /// Container().rush
+  ///   .constraints(BoxConstraints(minWidth: 100, minHeight: 100))
+  ///   .apply();
   /// ```
   RushContainerBuilder constraints(BoxConstraints constraints) =>
       this.._constraints = constraints;
@@ -183,7 +184,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().padding(Rush.e16).apply();
+  /// Container().rush.padding(Rush.e16).apply();
   /// ```
   RushContainerBuilder padding(EdgeInsetsGeometry val) =>
       this..rushPadding = val;
@@ -192,7 +193,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().margin(Rush.e16).apply();
+  /// Container().rush.margin(Rush.e16).apply();
   /// ```
   RushContainerBuilder margin(EdgeInsetsGeometry val) => this.._margin = val;
 
@@ -200,7 +201,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().color(Colors.red).apply();
+  /// Container().rush.color(Colors.red).apply();
   /// ```
   RushContainerBuilder color(Color color) => this..rushColor = color;
 
@@ -208,7 +209,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().hexColor('#FF0000').apply();
+  /// Container().rush.hexColor('#FF0000').apply();
   /// ```
   RushContainerBuilder hexColor(String colorHex) =>
       this..rushColor = Rush.hexToColor(colorHex);
@@ -217,7 +218,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().transform(Matrix4.translationValues(10, 10, 0)).apply();
+  /// Container().rush.transform(Matrix4.translationValues(10, 10, 0)).apply();
   /// ```
   RushContainerBuilder transform(Matrix4 val) => this.._transform = val;
 
@@ -225,7 +226,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().clip(Clip.antiAlias).apply();
+  /// Container().rush.clip(Clip.antiAlias).apply();
   /// ```
   RushContainerBuilder clip(Clip clip) => this.._clip = clip;
 
@@ -241,7 +242,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().withShadow([
+  /// Container().rush.withShadow([
   ///   BoxShadow(
   ///     color: Colors.black,
   ///     offset: Offset(2, 2),
@@ -258,7 +259,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().shadowOutline(outlineColor: Colors.blue).apply();
+  /// Container().rush.shadowOutline(outlineColor: Colors.blue).apply();
   /// ```
   RushContainerBuilder shadowOutline({Color? outlineColor}) {
     _containerShadow = [
@@ -276,7 +277,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().border(
+  /// Container().rush.border(
   ///   color: Colors.red,
   ///   width: 2.0,
   ///   style: BorderStyle.solid,
@@ -295,7 +296,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().linearGradient(
+  /// Container().rush.linearGradient(
   ///   [Colors.red, Colors.blue],
   ///   begin: Alignment.centerLeft,
   ///   end: Alignment.centerRight,
@@ -326,7 +327,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().radialGradient(
+  /// Container().rush.radialGradient(
   ///   [Colors.red, Colors.blue],
   ///   center: Alignment.center,
   ///   radius: 0.5,
@@ -363,7 +364,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().sweepGradient(
+  /// Container().rush.sweepGradient(
   ///   [Colors.red, Colors.blue],
   ///   center: Alignment.center,
   ///   startAngle: 0.0,
@@ -397,7 +398,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().gradient(
+  /// Container().rush.gradient(
   ///   LinearGradient(
   ///     colors: [Colors.red, Colors.blue],
   ///     begin: Alignment.centerLeft,
@@ -412,7 +413,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().backgroundImage(
+  /// Container().rush.backgroundImage(
   ///   DecorationImage(
   ///     image: AssetImage('assets/image.png'),
   ///     fit: BoxFit.cover,
@@ -426,7 +427,7 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
   ///
   /// Example:
   /// ```
-  /// Container().neumorphic(
+  /// Container().rush.neumorphic(
   ///   color: Colors.grey,
   ///   curve: RushCurve.concave,
   ///   elevation: 12.0,
@@ -443,6 +444,45 @@ class RushContainerBuilder extends RushWidgetBuilder<Widget>
           curve,
           elevation,
         );
+
+  /// Sets the container to have a neubrutalism style.
+  ///
+  /// Example:
+  /// ```
+  /// Container().rush.neubrutalism(
+  ///   borderColor: Colors.black,
+  ///   borderWidth: 2.0,
+  ///   shadowColor: Colors.grey,
+  ///   shadowBlurRadius: 8.0,
+  ///   offset: Offset(4.0, 4.0),
+  ///   shadowBlurStyle: BlurStyle.outer,
+  ///   color: Colors.white,
+  ///   borderRadius: BorderRadius.circular(8.0),
+  /// ).apply();
+  /// ```
+  RushContainerBuilder neuBrutalism({
+    Color? borderColor,
+    double? borderWidth,
+    Color? shadowColor,
+    double? shadowBlurRadius,
+    Offset? offset,
+    BlurStyle? shadowBlurStyle,
+    Color? color,
+    BorderRadius? borderRadius,
+  }) {
+    final decoration = neuBrutalDecoration(
+      borderColor: borderColor ?? RushNeuMixin.neuBrutBlack,
+      borderRadius: borderRadius ?? RushNeuMixin.neuBrutBorderRadius,
+      color: color ?? RushNeuMixin.neuBrutDefault,
+      borderWidth: borderWidth ?? RushNeuMixin.neuBrutBorder,
+      offset: offset ?? RushNeuMixin.neuBrutOffset,
+      shadowColor: shadowColor ?? RushNeuMixin.neuBrutShadow,
+      shadowBlurRadius:
+          shadowBlurRadius ?? RushNeuMixin.neuBrutShadowBlurRadius,
+      shadowBlurStyle: shadowBlurStyle ?? RushNeuMixin.neuBrutStyle,
+    );
+    return this.._decoration = decoration;
+  }
 
   @override
   Widget apply() {

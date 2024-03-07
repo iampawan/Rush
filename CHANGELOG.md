@@ -1,4 +1,12 @@
+[0.2.0] - Mar 07, 2024
+
+- Added support for NeoBrutalism
+- Added support for Shimmer.
+- RushFlip widget added.
+- Bug Fixes
+
 [0.1.3] - Mar 04, 2024
+
 - Added sortedBy ext for Iterable
 - Added status param in RushSync
 

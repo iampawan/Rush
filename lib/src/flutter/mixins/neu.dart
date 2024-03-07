@@ -18,6 +18,32 @@ import 'package:rush/src/flutter/types/neumorph.dart';
 /// A mixin that provides the Neumorphism functionality.
 
 mixin RushNeuMixin {
+  //Color
+
+  /// The black color for the neubrutalism decoration.
+  static const neuBrutBlack = Colors.black;
+
+  /// The color of the neubrutalism decoration.
+  static const neuBrutDefault = Colors.yellow;
+
+  /// Shadow color for the neubrutalism decoration.
+  static const neuBrutShadow = Color(0xFF080808);
+
+  /// Border width for the neubrutalism decoration.
+  static const neuBrutBorder = 3.0;
+
+  /// Shadow blur radius for the neubrutalism decoration.
+  static const neuBrutShadowBlurRadius = 0.0;
+
+  /// Offset for the neubrutalism decoration.
+  static const neuBrutOffset = Offset(4, 4);
+
+  /// Blur style for the neubrutalism decoration.
+  static const neuBrutStyle = BlurStyle.solid;
+
+  /// Border radius for the neubrutalism decoration.
+  static const neuBrutBorderRadius = BorderRadius.all(Radius.circular(12));
+
   Gradient? _gradient;
 
   @protected
@@ -86,6 +112,38 @@ mixin RushNeuMixin {
       shadowList,
       _gradient,
     );
+  }
+
+  @protected
+
+  /// Applies a neubrutalism decoration to the widget.
+  BoxDecoration neuBrutalDecoration({
+    required BorderRadius borderRadius,
+    required Color borderColor,
+    required double borderWidth,
+    required Color shadowColor,
+    required double shadowBlurRadius,
+    required Offset offset,
+    required BlurStyle shadowBlurStyle,
+    required Color color,
+  }) {
+    final decoration = BoxDecoration(
+      borderRadius: borderRadius,
+      border: Border.all(
+        color: borderColor,
+        width: borderWidth,
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: shadowColor,
+          blurRadius: shadowBlurRadius,
+          offset: offset,
+          blurStyle: shadowBlurStyle,
+        ),
+      ],
+      color: color,
+    );
+    return decoration;
   }
 
   Gradient _getFlatGradients(Color baseColor, double depth) => LinearGradient(

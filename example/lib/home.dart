@@ -92,6 +92,15 @@ class HomePage extends StatelessWidget {
               .gradientFromAndTo(from: Rush.indigo300, to: Rush.purple600)
               .padding(Rush.e16)
               .apply())
+          .addEmpty(height: 20)
+          .add(Container()
+              .rush
+              .height(100)
+              .widthInPercentage(context, 80)
+              .rounded
+              .neuBrutalism()
+              .padding(Rush.e16)
+              .apply())
           .applyWithPadding(),
     );
   }
