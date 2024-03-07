@@ -1,3 +1,5 @@
+// ignore_for_file: use_late_for_private_fields_and_variables
+
 /*
  * Copyright (c) 2024 Pawan Kumar. All rights reserved.
  *
@@ -53,6 +55,7 @@ abstract class RushFlow<T extends RushTank> {
       if (result is Future) {
         _status = RushStatus.loading;
         RushEngine.notify(this);
+
         result = await result;
       }
 
