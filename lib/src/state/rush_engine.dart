@@ -65,7 +65,7 @@ class RushEngine {
   static final _middlewares = <RushMiddleware>[];
 
   /// The tank/storage for this engine.
-  static final Map<Type, RushTank> _tanks = {};
+  static RushTank? _tank;
 
   /// The events of this engine.
   static Stream<RushFlow<RushTank>> get events => _controller.stream;
@@ -75,23 +75,15 @@ class RushEngine {
     T tank, {
     List<RushMiddleware>? middlewares,
   }) {
-    registerTank(tank);
+    _tank = tank;
     if (middlewares != null) {
       _middlewares.addAll(middlewares);
     }
   }
 
-  /// Registers a tank with this engine.
-  static void registerTank<T extends RushTank>(T tank) {
-    _tanks[T] = tank;
-  }
-
   /// Gets the tank of the given type.
   static T getTank<T extends RushTank>() {
-    if (!_tanks.containsKey(T)) {
-      throw Exception('No tank of type $T registered');
-    }
-    return _tanks[T]! as T;
+    return _tank! as T;
   }
 
   /// Adds a middleware to this engine.

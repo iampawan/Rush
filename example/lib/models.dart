@@ -2,16 +2,17 @@ import 'package:rush/rush.dart';
 
 class UserTank extends RushTank {
   List<User>? users;
+  final counterTank = CounterTank();
 }
 
-class CounterTank extends RushTank {
+class CounterTank {
   int value = 0;
 }
 
-class IncrementFlow extends RushFlow<CounterTank> with RushChain<int> {
+class IncrementFlow extends RushFlow<UserTank> with RushChain<int> {
   @override
   dynamic execute() {
-    return tank.value += 2;
+    return tank.counterTank.value += 2;
   }
 
   @override
@@ -20,7 +21,7 @@ class IncrementFlow extends RushFlow<CounterTank> with RushChain<int> {
   }
 }
 
-class DecrementFlow extends RushFlow<CounterTank> {
+class DecrementFlow extends RushFlow<UserTank> {
   DecrementFlow(this.amount);
 
   final int amount;
@@ -28,9 +29,9 @@ class DecrementFlow extends RushFlow<CounterTank> {
   @override
   Future<void> execute() async {
     // tank.value -= amount;
-    if (tank.value >= 0) {
+    if (tank.counterTank.value >= 0) {
       await Future.delayed(2.toSeconds);
-      tank.value -= amount;
+      tank.counterTank.value -= amount;
     } else {
       throw Exception('Value cannot be negative.');
     }

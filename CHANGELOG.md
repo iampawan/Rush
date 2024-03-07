@@ -1,4 +1,4 @@
-[0.2.0] - Mar 07, 2024
+[0.2.1] - Mar 07, 2024
 
 - Added support for NeoBrutalism
 - Added support for Shimmer.

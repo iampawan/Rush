@@ -1,33 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rush/rush.dart';
 
-/// Represents a tank for managing the theme mode in Rush.
-///
-/// Example usage:
-/// ```dart
-/// RushThemeTank themeTank = RushEngine.getTank<RushThemeTank>();
-/// ```
-class RushThemeTank extends RushTank {
-  /// The current theme mode.
-  ThemeMode themeMode = ThemeMode.system;
-
-  /// Whether the current theme mode is dark.
-  bool get isDark => themeMode == ThemeMode.dark;
-
-  /// Whether the current theme mode is light.
-  bool get isLight => themeMode == ThemeMode.light;
-
-  /// Whether the current theme mode is system.
-  bool get isSystem => themeMode == ThemeMode.system;
-}
-
 /// Represents a flow for changing the theme mode in Rush.
 ///
 /// Example usage:
 /// ```dart
 /// RushChangeThemeFlow(themeMode: ThemeMode.dark);
 /// ```
-class RushChangeThemeFlow extends RushFlow<RushThemeTank> {
+class RushChangeThemeFlow extends RushFlow {
   /// Creates a RushChangeThemeFlow.
   RushChangeThemeFlow({required this.themeMode});
 
@@ -35,7 +15,7 @@ class RushChangeThemeFlow extends RushFlow<RushThemeTank> {
   final ThemeMode themeMode;
   @override
   void execute() {
-    tank.themeMode = themeMode;
+    Rush.themeMode = themeMode;
   }
 }
 
@@ -59,15 +39,14 @@ class RushThemeBuilder extends StatelessWidget {
   });
 
   /// The builder for this widget.
-  final Widget Function(BuildContext context, RushThemeTank themeTank)? builder;
+  final Widget Function(BuildContext context, ThemeMode theme)? builder;
 
   @override
   Widget build(BuildContext context) {
-    RushEngine.registerTank(RushThemeTank());
-    return RushSync<RushThemeTank>(
+    return RushSync<RushTank>(
       actions: const {RushChangeThemeFlow},
       builder: (context, tank, status) {
-        return builder?.call(context, tank) ?? const SizedBox();
+        return builder?.call(context, Rush.themeMode) ?? const SizedBox();
       },
     );
   }

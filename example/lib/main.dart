@@ -6,7 +6,7 @@ import 'package:rush/rush.dart';
 
 void main() {
   RushEngine.init<UserTank>(UserTank(), middlewares: [LoggingMiddleware()]);
-  RushEngine.registerTank<CounterTank>(CounterTank());
+
   runApp(const MyApp());
 }
 
@@ -16,12 +16,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return RushThemeBuilder(builder: (context, tankTheme) {
-      Rush.log(tankTheme.isDark);
+    return RushThemeBuilder(builder: (context, theme) {
+      Rush.log(theme.name);
       return MaterialApp(
         title: 'Flutter Demo',
-        themeMode: tankTheme.themeMode,
-        theme: tankTheme.isDark
+        themeMode: theme,
+        theme: Rush.isDark
             ? ThemeData.dark(useMaterial3: true)
             : ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

@@ -7,8 +7,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tank = RushEngine.getTank<CounterTank>();
-    Rush.log(tank.value);
+    final tank = RushEngine.getTank<UserTank>();
+    Rush.log(tank.counterTank.value);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Rush'),
@@ -37,6 +37,11 @@ class HomePage extends StatelessWidget {
           .apply(),
       body: const Column()
           .rush
+          .add(RushSync(
+              builder: (context, tank, status) {
+                return Text('Value: $tank');
+              },
+              actions: const {IncrementFlow, DecrementFlow}))
           .add(
             RushSyncNotifier(
               actions: {
@@ -46,9 +51,9 @@ class HomePage extends StatelessWidget {
                   );
                 },
               },
-              child: RushSync<CounterTank>(
+              child: RushSync<UserTank>(
                 builder: (context, tank, status) {
-                  return Text('Value: ${tank.value}');
+                  return Text('Value: ${tank.counterTank.value}');
                 },
                 actions: const {IncrementFlow, DecrementFlow},
               ),

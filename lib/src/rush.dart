@@ -1759,6 +1759,19 @@ mixin Rush {
           defaultTargetPlatform == TargetPlatform.macOS ||
           defaultTargetPlatform == TargetPlatform.windows);
 
+  /// Themes
+  /// The current theme mode.
+  static ThemeMode themeMode = ThemeMode.system;
+
+  /// Whether the current theme mode is dark.
+  static bool get isDark => themeMode == ThemeMode.dark;
+
+  /// Whether the current theme mode is light.
+  static bool get isLight => themeMode == ThemeMode.light;
+
+  /// Whether the current theme mode is system.
+  static bool get isSystem => themeMode == ThemeMode.system;
+
   /// Converts a hexadecimal string to ASCII text.
   static String hexToAscii(String hex) {
     final splitted = <String>[];

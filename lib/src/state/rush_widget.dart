@@ -138,7 +138,7 @@ class _RushSyncState<T extends RushTank> extends State<RushSync<T>> {
           }
           return Center(child: Text(error));
         }
-        final tank = RushEngine.getTank<T>();
+        final tank = RushEngine.getTank() as T;
         return widget.builder(context, tank, status);
       },
     );
