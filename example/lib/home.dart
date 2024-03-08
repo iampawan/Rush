@@ -88,6 +88,10 @@ class HomePage extends StatelessWidget {
             actions: const {FetchUsersFlow},
           ))
           .add(const Text("Child 1").rush.xl6.red700.apply())
+          .add(RichText(
+            text: const TextSpan(
+                text: "Test: ", children: [TextSpan(text: "YO")]),
+          ).rush.black.bold.apply())
           .add(const RushHeightBox(20))
           .add(Container()
               .rush

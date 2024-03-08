@@ -425,7 +425,7 @@ class RushTextBuilder extends RushWidgetBuilder<Widget>
             key: _child.key,
             textAlign: _textAlign ?? TextAlign.start,
             maxLines: _maxLines,
-            textScaler: scaler!,
+            textScaler: scaler ?? TextScaler.noScaling,
             text: span,
             softWrap: _softWrap ?? true,
             overflow: _overflow ?? TextOverflow.clip,
