@@ -204,12 +204,13 @@ class RushFlipState extends State<RushFlip>
     if (!mounted) return;
     widget.onFlip?.call();
     _controller.duration = widget.duration;
-    _isFront
-        ? _controller.forward()
-        : _controller.reverse().whenComplete(() {
-            setState(() => _isFront = !_isFront);
-            widget.onFlipDone?.call(isFront: _isFront);
-          });
+
+    final animation = _isFront ? _controller.forward() : _controller.reverse();
+    // ignore: cascade_invocations
+    animation.whenComplete(() {
+      setState(() => _isFront = !_isFront);
+      widget.onFlipDone?.call(isFront: _isFront);
+    });
   }
 
   /// Flip the card without playing an animation.
@@ -259,7 +260,9 @@ class RushFlipState extends State<RushFlip>
       AnimatedBuilder(
         animation: animation,
         builder: (_, Widget? child) {
-          final transform = Matrix4.identity()..setEntry(3, 2, 0.001);
+          final transform = Matrix4.identity();
+          // ignore: cascade_invocations
+          transform.setEntry(3, 2, 0.001);
           if (widget.direction == Axis.vertical) {
             transform.rotateX(animation.value);
           } else {

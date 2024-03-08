@@ -98,14 +98,23 @@ class HomePage extends StatelessWidget {
               .padding(Rush.e16)
               .apply())
           .addEmpty(height: 20)
-          .add(Container()
-              .rush
-              .height(100)
-              .widthInPercentage(context, 80)
-              .rounded
-              .neuBrutalism()
-              .padding(Rush.e16)
-              .apply())
+          .add(RushFlip(
+              front: Container()
+                  .rush
+                  .height(100)
+                  .widthInPercentage(context, 80)
+                  .rounded
+                  .neuBrutalism()
+                  .padding(Rush.e16)
+                  .apply(),
+              back: Container()
+                  .rush
+                  .height(100)
+                  .widthInPercentage(context, 80)
+                  .rounded
+                  .neuBrutalism(color: Colors.red)
+                  .padding(Rush.e16)
+                  .apply()))
           .applyWithPadding(),
     );
   }

@@ -114,10 +114,7 @@ class _RushSyncState<T extends RushTank> extends State<RushSync<T>> {
   @override
   Widget build(BuildContext context) {
     final stream = RushEngine.events.where(
-      (e) =>
-          (widget.actions != null && widget.actions!.contains(e.runtimeType)) ||
-          (widget.actionNotifier != null &&
-              widget.actionNotifier!.keys.contains(e.runtimeType)),
+      (e) => widget.actions!.contains(e.runtimeType),
     );
     return StreamBuilder<RushFlow>(
       stream: stream,
