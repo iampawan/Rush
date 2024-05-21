@@ -531,7 +531,7 @@ void main() {
             ),
             colorScheme: ColorScheme.fromSwatch().copyWith(
               secondary: expectedAccentColor,
-              background: expectedBgColor,
+              surface: expectedBgColor,
             ),
           ),
           home: Builder(

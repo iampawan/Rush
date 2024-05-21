@@ -446,7 +446,7 @@ extension RushThemeExtensions on BuildContext {
   ///
   /// A color that contrasts with the [primaryColor].
   ///
-  Color get backgroundColor => theme.colorScheme.background;
+  Color get backgroundColor => theme.colorScheme.surface;
 
   ///
   /// The default color of [MaterialType.canvas] [Material].
