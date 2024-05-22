@@ -5,6 +5,8 @@
 [![License: Apache][license_badge]][license_link]
 ![Status][fast]
 
+## [Full Documentation]("https://learn.codepur.dev/rush)
+
 Rush is a powerful and flexible library for Flutter that accelerates UI development. It provides a set of utilities and extensions that make it easier to style and manage your Flutter widgets. With Rush, you can apply complex styles like gradients, shadows, and strokes with just a few lines of code. It also supports chaining methods for a more fluent and expressive coding style.
 
 ## Installation 💻
@@ -21,3 +23,13 @@ dart pub add rush
 [license_badge]: https://img.shields.io/badge/license-apache-red.svg
 [license_link]: https://opensource.org/license/apache-2-0/
 [fast]: https://img.shields.io/badge/fast-3763f5
+
+### Coverage Setup
+
+flutter test --coverage --test-randomize-ordering-seed random
+
+flutter test --coverage
+
+flutter pub run coverage:format
+
+genhtml coverage/lcov.info -o coverage/html
